@@ -3,9 +3,11 @@ import React from 'react';
 import { StyleSheet, Text, View, Image,  } from 'react-native';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout, Button} from '@ui-kitten/components';
+import * as Google from 'expo-google-app-auth';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery, NormalizedCacheObject  } from '@apollo/client';
 
 
+ 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   uri: 'http://localhost:4000/',
   cache: new InMemoryCache()
@@ -13,26 +15,36 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 
 export default function App() {
 
-//   client
-//     .query({
-//       query: gql`
-//       query {
-//   books {
-//     author
-    
-//     title
-//   }
-// }
-//     `
-//     })
-//     .then(result => console.log(result.data));
+  async function signInWithGoogleAsync() {
+    // console.log(Google)
+    try {
+    const { type, accessToken, user } = await Google.logInAsync({
+      androidClientId: "205970127788-nl4ule2kninjcgrbkfo7li8bbvil2796.apps.googleusercontent.com",
+      iosClientId: "205970127788-i45v5qq1u26qe4cl0fo4nms4hoko293p.apps.googleusercontent.com",
+      scopes: ['profile', 'email']
+    });
+
+    if (type === 'success') {
+      console.log(user);
+      return accessToken;
+    } else {
+      return { cancelled: true };
+    }
+    } catch (e) {
+      return { error: true }
+    }
+  }
 
   return (
     // <ApolloProvider client={client} >
     <ApplicationProvider {...eva} theme={eva.dark}>
       <View style={styles.container}>
         <Image style={styles.logo} source={require('./assets/text-logo.png')} />
-  <Button title="Login with Google">{"Login With Google"}</Button> 
+        <Button 
+          title="Login with Google"
+          onPress={signInWithGoogleAsync} 
+        >{"Login With Google"}
+        </Button> 
         <Image style={styles.rocket} source={require('./assets/picsart.png')} />
         <StatusBar style="auto" />
       </View>
