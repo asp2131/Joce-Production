@@ -5,8 +5,8 @@ import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout, Button} from '@ui-kitten/components';
 import * as Google from 'expo-google-app-auth';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery, NormalizedCacheObject  } from '@apollo/client';
-
-
+import Constants from 'expo-constants';
+const { ANDROID_CLIENT_ID, IOS_CLIENT_ID} = Constants.manifest.extra
  
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   uri: 'http://localhost:4000/',
@@ -19,8 +19,8 @@ export default function App() {
     // console.log(Google)
     try {
     const { type, accessToken, user } = await Google.logInAsync({
-      androidClientId: "205970127788-nl4ule2kninjcgrbkfo7li8bbvil2796.apps.googleusercontent.com",
-      iosClientId: "205970127788-i45v5qq1u26qe4cl0fo4nms4hoko293p.apps.googleusercontent.com",
+      androidClientId: ANDROID_CLIENT_ID,
+      iosClientId: IOS_CLIENT_ID,
       scopes: ['profile', 'email']
     });
 
