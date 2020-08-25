@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, Image, Button } from 'react-native';
-import SvgUri from 'react-native-svg-uri';
+import { StyleSheet, Text, View, Image,  } from 'react-native';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout, Button} from '@ui-kitten/components';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery, NormalizedCacheObject  } from '@apollo/client';
 
 
@@ -12,28 +13,30 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 
 export default function App() {
 
-  client
-    .query({
-      query: gql`
-      query {
-  books {
-    author
+//   client
+//     .query({
+//       query: gql`
+//       query {
+//   books {
+//     author
     
-    title
-  }
-}
-    `
-    })
-    .then(result => console.log(result.data));
+//     title
+//   }
+// }
+//     `
+//     })
+//     .then(result => console.log(result.data));
 
   return (
     // <ApolloProvider client={client} >
+    <ApplicationProvider {...eva} theme={eva.dark}>
       <View style={styles.container}>
         <Image style={styles.logo} source={require('./assets/text-logo.png')} />
-        <Button color="#fff" title="Login with Google"></Button> 
+  <Button title="Login with Google">{"Login With Google"}</Button> 
         <Image style={styles.rocket} source={require('./assets/picsart.png')} />
         <StatusBar style="auto" />
       </View>
+    </ApplicationProvider>
     // </ApolloProvider> 
   );
 }
@@ -59,6 +62,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   button: {
-    color: "#fff"
+    color: "#fff",
+    textDecorationColor: "#8e44ad"
   } 
 });
