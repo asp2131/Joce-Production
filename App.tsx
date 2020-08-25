@@ -29,8 +29,9 @@ export default function App() {
   return (
     // <ApolloProvider client={client} >
       <View style={styles.container}>
-      <Image style={styles.logo} source={require('./assets/text-logo.png')} />
-      <Button color="#fff" title="Login with Google"></Button> 
+        <Image style={styles.logo} source={require('./assets/text-logo.png')} />
+        <Button color="#fff" title="Login with Google"></Button> 
+        <Image style={styles.rocket} source={require('./assets/picsart.png')} />
         <StatusBar style="auto" />
       </View>
     // </ApolloProvider> 
@@ -47,7 +48,14 @@ const styles = StyleSheet.create({
   logo: {
     width: 200,
     height: 200,
-    bottom: 200,
+    bottom: 100,
+    resizeMode: 'contain'
+  },
+  rocket: {
+    top: 650,
+    position: 'absolute',
+    width: 400,
+    height: 400,
     resizeMode: 'contain'
   },
   button: {
