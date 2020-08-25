@@ -15,15 +15,13 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 
 export default function App() {
 
-  async function signInWithGoogleAsync() {
-    // console.log(Google)
+  const signInWithGoogleAsync = async () => {
     try {
     const { type, accessToken, user } = await Google.logInAsync({
       androidClientId: ANDROID_CLIENT_ID,
       iosClientId: IOS_CLIENT_ID,
       scopes: ['profile', 'email']
     });
-
     if (type === 'success') {
       console.log(user);
       return accessToken;
