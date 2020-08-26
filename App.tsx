@@ -16,7 +16,6 @@ export default function App() {
       query {
   books {
     author
-    
     title
   }
 }
@@ -27,10 +26,10 @@ export default function App() {
   return (
     // <ApolloProvider client={client} >
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
+        <Text>Open up App.js to start working on your app! Hi</Text>
         <StatusBar style="auto" />
       </View>
-    // </ApolloProvider> 
+    // </ApolloProvider>
   );
 }
 
