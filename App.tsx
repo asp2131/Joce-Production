@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, Image,  } from 'react-native';
+import { StyleSheet  } from 'react-native';
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, Layout, Button} from '@ui-kitten/components';
+import { ApplicationProvider} from '@ui-kitten/components';
 import * as Google from 'expo-google-app-auth';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery, NormalizedCacheObject  } from '@apollo/client';
 import Constants from 'expo-constants';
 const { ANDROID_CLIENT_ID, IOS_CLIENT_ID} = Constants.manifest.extra
+import Login from './screens/Login';
  
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   uri: 'http://localhost:4000/',
@@ -39,16 +40,7 @@ export default function App() {
   return (
     // <ApolloProvider client={client} >
     <ApplicationProvider {...eva} theme={eva.dark}>
-      <View style={styles.container}>
-        <Image style={styles.logo} source={require('./assets/text-logo.png')} />
-        <Button 
-          title="Login with Google"
-          onPress={signInWithGoogleAsync} 
-        >{"Login With Google"}
-        </Button> 
-        <Image style={styles.rocket} source={require('./assets/picsart.png')} />
-        <StatusBar style="auto" />
-      </View>
+      <Login signInWithGoogleAsync={signInWithGoogleAsync}/>
     </ApplicationProvider>
     // </ApolloProvider> 
   );
