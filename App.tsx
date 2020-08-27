@@ -8,7 +8,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery, NormalizedC
 import Constants from 'expo-constants';
 const { ANDROID_CLIENT_ID, IOS_CLIENT_ID} = Constants.manifest.extra
 import Login from './screens/Login';
- 
+
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   uri: 'http://localhost:4000/',
   cache: new InMemoryCache()
@@ -42,12 +42,12 @@ export default function App() {
     <ApplicationProvider {...eva} theme={eva.dark}>
       <Login signInWithGoogleAsync={signInWithGoogleAsync}/>
     </ApplicationProvider>
-    // </ApolloProvider> 
+    // </ApolloProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {   
+  container: {
     flex: 1,
     backgroundColor: '#8e44ad',
     alignItems: 'center',
@@ -69,5 +69,5 @@ const styles = StyleSheet.create({
   button: {
     color: "#fff",
     textDecorationColor: "#8e44ad"
-  } 
+  }
 });
