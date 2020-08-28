@@ -9,7 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 
 export default function Home(props) {
-    const { toggleTheme, brightness} = props;
+    const { toggleTheme, brightness, logo} = props;
 
     return (
         <Layout style={styles.container}>
@@ -18,8 +18,11 @@ export default function Home(props) {
                 <MaterialCommunityIcons name="brightness-6" color={brightness} size={20} />
             </TouchableOpacity>
             </Layout>
-            <Image style={styles.logo} source={require('../assets/text-logo.png')} />
-
+            {
+                logo ? <Image style={styles.logo} source={require('../assets/joceAlt.png')} /> :
+                    <Image style={styles.logo} source={require('../assets/text-logo.png')} />
+            }
+            
             <Poll />
         </Layout>
     );

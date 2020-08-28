@@ -18,11 +18,13 @@ export default function Dashboard() {
     const [theme, setTheme] = React.useState(eva.light);
     const [navColor, setNav] = React.useState('#8e44ad');
     const [brightness, setBrightness] = React.useState('rgb(35, 43, 67)');
+    const [logo, setLogo] = React.useState(true)
 
     const toggleTheme = () => {
         const nextTheme = theme === eva.light ? eva.dark : eva.light;
         const newNavColor = navColor === '#8e44ad' ? 'rgb(35, 43, 67)' : '#8e44ad';
         const sunColor = brightness === 'rgb(35, 43, 67)' ? '#8e44ad' : 'rgb(35, 43, 67)';
+        setLogo(!logo)
         setBrightness(brightness)
         setTheme(nextTheme);
         setNav(newNavColor)
@@ -37,7 +39,7 @@ export default function Dashboard() {
             >
                 <Tab.Screen
                     name="Feed"
-                    children={() => <Home brightness={brightness} toggleTheme={toggleTheme} />}
+                    children={() => <Home logo={logo} brightness={brightness} toggleTheme={toggleTheme} />}
                     options={{
                         tabBarLabel: 'Home',
                         tabBarIcon: ({ color }) => (
