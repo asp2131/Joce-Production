@@ -11,12 +11,13 @@ import { NavigationContainer } from '@react-navigation/native';
 
 
  
+
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   uri: 'http://localhost:4000/',
   cache: new InMemoryCache()
 });
 
-export default function App() {
+export default function App() { 
 
   /*
   functions allows users to sign in with google
@@ -50,7 +51,7 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {   
+  container: {
     flex: 1,
     backgroundColor: '#8e44ad',
     alignItems: 'center',
@@ -72,5 +73,5 @@ const styles = StyleSheet.create({
   button: {
     color: "#fff",
     textDecorationColor: "#8e44ad"
-  } 
+  }
 });
