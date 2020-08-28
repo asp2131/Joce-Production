@@ -14,14 +14,30 @@ import Profile from './Profile'
 const Tab = createMaterialBottomTabNavigator();
 
 export default function Dashboard() {
+
+    const [theme, setTheme] = React.useState(eva.light);
+    const [navColor, setNav] = React.useState('#8e44ad');
+    const [brightness, setBrightness] = React.useState('rgb(35, 43, 67)');
+
+    const toggleTheme = () => {
+        const nextTheme = theme === eva.light ? eva.dark : eva.light;
+        const newNavColor = navColor === '#8e44ad' ? 'rgb(35, 43, 67)' : '#8e44ad';
+        const sunColor = brightness === 'rgb(35, 43, 67)' ? '#8e44ad' : 'rgb(35, 43, 67)';
+        setBrightness(brightness)
+        setTheme(nextTheme);
+        setNav(newNavColor)
+    };
+
+
+
     return (
-        <ApplicationProvider mapping={eva.mapping} {...eva} theme={eva.dark}>
+        <ApplicationProvider mapping={eva.mapping} {...eva} theme={theme}>
             <Tab.Navigator
-                barStyle={{ backgroundColor: 'rgb(35, 43, 67)' }}
+                barStyle={{ backgroundColor: navColor }}
             >
                 <Tab.Screen
                     name="Feed"
-                    component={Home}
+                    children={() => <Home brightness={brightness} toggleTheme={toggleTheme} />}
                     options={{
                         tabBarLabel: 'Home',
                         tabBarIcon: ({ color }) => (
