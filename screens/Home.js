@@ -14,7 +14,7 @@ export default function Home(props) {
     return (
         <Layout style={styles.container}>
             <Layout style={styles.header} level='2'>
-                <TouchableOpacity onPress={toggleTheme}>
+                <TouchableOpacity onPress={toggleTheme} >
                 <MaterialCommunityIcons name="brightness-6" color={brightness} size={20} />
             </TouchableOpacity>
             </Layout>

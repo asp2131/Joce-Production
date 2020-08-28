@@ -25,7 +25,7 @@ export default function Dashboard() {
         const newNavColor = navColor === '#8e44ad' ? 'rgb(35, 43, 67)' : '#8e44ad';
         const sunColor = brightness === 'rgb(35, 43, 67)' ? '#8e44ad' : 'rgb(35, 43, 67)';
         setLogo(!logo)
-        setBrightness(brightness)
+        setBrightness(sunColor)
         setTheme(nextTheme);
         setNav(newNavColor)
     };
