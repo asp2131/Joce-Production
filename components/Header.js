@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, ScrollView, FlatList } from 'react-native';
 import { Layout } from 'react-native-ui-kitten';
-import { Container, Header, Tab, Tabs, ScrollableTab, Icon, Button, Body, Right } from 'native-base';
+import { Card, Header, Tab, Tabs, ScrollableTab, Icon, Button, Body, Right, CardItem } from 'native-base';
+import Post from './Card'
 
 export default function TabsScrollableExample(){
     
@@ -25,7 +26,14 @@ export default function TabsScrollableExample(){
                         activeTextStyle={{ color: "black" }}
                         tabStyle={{ backgroundColor: 'white' }}
                         heading="Fashion">
-                        <Text >Tab 1</Text>
+                        <ScrollView contentContainerStyle={styles.contentContainer}>
+                            <Post /> 
+                            <Post /> 
+
+                            <Post /> 
+                            <Post /> 
+                        </ScrollView>
+                              
                     </Tab>
                     <Tab
                         heading="Sports"
@@ -72,5 +80,8 @@ const styles = StyleSheet.create({
     },
     nav: {
         backgroundColor: '#ffff'
+    },
+    contentContainer: {
+        paddingVertical: 0
     }
 })
