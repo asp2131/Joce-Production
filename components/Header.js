@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet } from 'react-native';
+import { Layout } from 'react-native-ui-kitten';
 import { Container, Header, Tab, Tabs, ScrollableTab, Icon, Button, Body, Right } from 'native-base';
 
 export default function TabsScrollableExample(){
     
         return (
-            <Container  >
+            <Layout  >
                 <Header androidStatusBarColor="#e6deff" iosBarStyle="#e6deff"  hasTabs transparent>
                     <Body>
                         <Text style={styles.header}>Explore</Text>
@@ -55,7 +56,7 @@ export default function TabsScrollableExample(){
                         <Text>Tab 5</Text>
                     </Tab>
                 </Tabs>
-            </Container>
+            </Layout>
         );
     
 }
