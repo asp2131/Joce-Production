@@ -1,9 +1,24 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Image, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body, Right } from 'native-base';
 
-export default class PostCard extends Component {
-    render() {
+export default function PostCard(){
+
+    const [likes, setLikes] = useState(0);
+    const navigation = useNavigation(); 
+
+    // const [qaView, toggleQaView] = useState(false)
+
+    const updateLike = () => {
+        
+    }
+
+    // const navigateQaView = () => {
+    //     toggleQaView(true)
+    // }
+
+   
         return (
                 <Content>
                     <Card>
@@ -28,7 +43,7 @@ export default class PostCard extends Component {
                                 </Button>
                             </Left>
                             <Body>
-                                <Button transparent>
+                            <Button onPress={() => navigation.navigate("ViewPost")} transparent>
                                     <Icon active name="chatbubbles" />
                                     <Text>4 Comments</Text>
                                 </Button>
@@ -38,7 +53,7 @@ export default class PostCard extends Component {
                             </Right>
                         </CardItem>
                     </Card>
-                </Content>
+                </Content> 
         );
-    }
 }
+
