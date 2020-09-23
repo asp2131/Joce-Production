@@ -1,20 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet  } from 'react-native';
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider} from '@ui-kitten/components';
 import * as Google from 'expo-google-app-auth';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery, NormalizedCacheObject  } from '@apollo/client';
 import Constants from 'expo-constants';
 const { ANDROID_CLIENT_ID, IOS_CLIENT_ID} = Constants.manifest.extra
 import Login from './screens/Login';
+import Dashboard from './screens/Dashboard'
+import { NavigationContainer } from '@react-navigation/native';
+
+
+ 
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   uri: 'http://localhost:4000/',
   cache: new InMemoryCache()
 });
 
-export default function App() {
+export default function App() { 
 
   /*
   functions allows users to sign in with google
@@ -39,10 +42,11 @@ export default function App() {
 
   return (
     // <ApolloProvider client={client} >
-    <ApplicationProvider {...eva} theme={eva.dark}>
-      <Login signInWithGoogleAsync={signInWithGoogleAsync}/>
-    </ApplicationProvider>
-    // </ApolloProvider>
+    <NavigationContainer>
+      {/* <Login signInWithGoogleAsync={signInWithGoogleAsync}/> */}
+      <Dashboard />
+    </NavigationContainer>
+    // </ApolloProvider> 
   );
 }
 
