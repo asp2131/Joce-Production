@@ -7,10 +7,10 @@ import Constants from 'expo-constants';
 const { ANDROID_CLIENT_ID, IOS_CLIENT_ID} = Constants.manifest.extra
 import Login from './screens/Login';
 import Dashboard from './screens/Dashboard'
+import QaPost from './screens/QaPost'
 import { NavigationContainer } from '@react-navigation/native';
 
 
- 
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   uri: 'http://localhost:4000/',
@@ -49,6 +49,8 @@ export default function App() {
     // </ApolloProvider> 
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

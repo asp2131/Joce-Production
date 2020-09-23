@@ -9,6 +9,10 @@ import Home from './Home'
 import Explore from './Explore'
 import Create from './Create'
 import Profile from './Profile'
+import QaPost from './QaPost'
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
 
 
 const Tab = createMaterialBottomTabNavigator();
@@ -49,7 +53,7 @@ export default function Dashboard() {
                 />
                 <Tab.Screen
                     name="Explore"
-                    component={Explore}
+                    component={ExploreStack}
                     options={{
                         tabBarLabel: 'Explore',
                         tabBarIcon: ({ color }) => (
@@ -80,5 +84,16 @@ export default function Dashboard() {
             </Tab.Navigator>
         </ApplicationProvider>
 
+    );
+}
+
+function ExploreStack() {
+    return (
+        <Stack.Navigator screenOptions={{
+            headerShown: false
+        }}>
+            <Stack.Screen name="Home" component={Explore} />
+            <Stack.Screen name="ViewPost" component={QaPost} />
+        </Stack.Navigator>
     );
 }

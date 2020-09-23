@@ -2,14 +2,14 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button, Layout } from 'react-native-ui-kitten';
-
+import Header from '../components/Header'
 
 
 
 export default function Explore() {
     return (
         <Layout style={styles.container}>
-            <Text>Explore View!</Text>
+            <Header></Header>
         </Layout>
     );
 }
