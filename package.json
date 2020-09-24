@@ -18,6 +18,7 @@
     "@ui-kitten/components": "^5.0.0",
     "apollo-server": "^2.16.1",
     "expo": "~38.0.8",
+    "expo-font": "~8.2.1",
     "expo-google-app-auth": "^8.1.2",
     "expo-image-picker": "~8.3.0",
     "expo-status-bar": "^1.0.2",

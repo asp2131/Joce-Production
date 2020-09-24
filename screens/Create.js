@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Image, View, Text, Button } from 'react-native'
-import { Input } from 'native-base'
+import { Input } from 'react-native-ui-kitten'
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
@@ -71,16 +71,7 @@ class AddPost extends Component {
                             style={{ width: '100%', height: 300 }}
                         />
                     ) : (
-                            <Button
-                                onPress={this.selectImage}
-                                title="Add an image"
-                                style={{
-                                    alignItems: 'center',
-                                    padding: 10,
-                                    margin: 30
-                                }}>
-                                
-                            </Button>
+                            null
                         )}
                 </View>
                 <View style={{ marginTop: 80, alignItems: 'center' }}>
@@ -97,6 +88,16 @@ class AddPost extends Component {
                         value={this.state.description}
                         onChangeText={description => this.onChangeDescription(description)}
                     />
+                    <Button
+                        onPress={this.selectImage}
+                        title="Add image"
+                        style={{
+                            alignItems: 'center',
+                            padding: 10,
+                            margin: 30
+                        }}>
+
+                    </Button>
                     <Button status='success' onPress={this.onSubmit} title="Add post">
                         
           </Button>

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet  } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery, NormalizedCacheObject  } from '@apollo/client';
@@ -7,7 +7,8 @@ import Constants from 'expo-constants';
 const { ANDROID_CLIENT_ID, IOS_CLIENT_ID} = Constants.manifest.extra
 import Login from './screens/Login';
 import Dashboard from './screens/Dashboard'
-import QaPost from './screens/QaPost'
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 
 
@@ -18,6 +19,8 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 });
 
 export default function App() { 
+
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   /*
   functions allows users to sign in with google
@@ -40,9 +43,26 @@ export default function App() {
     }
   }
 
+  const fetchFonts = () => {
+    return Font.loadAsync({
+      'mont-bold': require('./assets/font/mont-bold.ttf'),
+      'mont': require('./assets/font/ssp-reg.ttf'),
+    });
+  };
+
+  if(!dataLoaded){
+    return (
+      <AppLoading
+        startAsync={fetchFonts}
+        onFinish={() => setDataLoaded(true)}
+      />
+    )
+  }
+
   return (
     // <ApolloProvider client={client} >
     <NavigationContainer>
+      
       {/* <Login signInWithGoogleAsync={signInWithGoogleAsync}/> */}
       <Dashboard />
     </NavigationContainer>
@@ -58,22 +78,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#8e44ad',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  logo: {
-    width: 200,
-    height: 200,
-    bottom: 100,
-    resizeMode: 'contain'
-  },
-  rocket: {
-    top: 650,
-    position: 'absolute',
-    width: 400,
-    height: 400,
-    resizeMode: 'contain'
-  },
-  button: {
-    color: "#fff",
-    textDecorationColor: "#8e44ad"
   }
 });

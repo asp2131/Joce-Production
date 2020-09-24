@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { Text, StyleSheet, ScrollView, TouchableHighlight } from 'react-native';
 import { Layout } from 'react-native-ui-kitten';
-import { Card, Header, Tab, Tabs, ScrollableTab, Icon, Button, Body, Right, CardItem } from 'native-base';
+import { Card, Header, Tab, Tabs, ScrollableTab, Icon, Button, Body, Right, Title } from 'native-base';
 import Post from './Card'
 
 export default function TabsScrollableExample(){
@@ -13,17 +13,18 @@ export default function TabsScrollableExample(){
                         <Text style={styles.header}>Explore</Text>
                     </Body>
                     <Right>
-                        <Button
+                        <TouchableHighlight
                         style={styles.nav}
                         >
-                            <Icon style={{color: "black"}} name='search' />
-                        </Button>
+                            <Icon style={{color: "black", right: 10}} name='search' />
+                        </TouchableHighlight>
                     </Right>
                 </Header>
                 <Tabs renderTabBar={() => <ScrollableTab />}>
                     <Tab
                         activeTabStyle={{ backgroundColor: 'white' }}
-                        activeTextStyle={{ color: "black" }}
+                        activeTextStyle={{ fontFamily: 'mont', color: "black" }} 
+                        textStyle={{ fontFamily: 'mont' }} 
                         tabStyle={{ backgroundColor: 'white' }}
                         heading="Fashion">
                         <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -38,28 +39,32 @@ export default function TabsScrollableExample(){
                     <Tab
                         heading="Sports"
                         activeTabStyle={{ backgroundColor: 'white' }}
-                        activeTextStyle={{ color: "black" }}
+                        activeTextStyle={{ fontFamily: 'mont', color: "black" }} 
+                        textStyle={{ fontFamily: 'mont' }}
                         tabStyle={{ backgroundColor: 'white' }}>
                         <Text>Tab 2</Text>
                     </Tab>
                     <Tab
                         heading="Tech"
                         activeTabStyle={{ backgroundColor: 'white' }}
-                        activeTextStyle={{ color: "black" }}
+                        activeTextStyle={{ fontFamily: 'mont', color: "black" }} 
+                        textStyle={{ fontFamily: 'mont' }}
                         tabStyle={{ backgroundColor: 'white' }}>
                         <Text>Tab 3</Text>
                     </Tab>
                     <Tab
                         heading="Music"
                         activeTabStyle={{ backgroundColor: 'white' }}
-                        activeTextStyle={{ color: "black" }}
+                        activeTextStyle={{ fontFamily: 'mont', color: "black" }} 
+                        textStyle={{ fontFamily: 'mont' }}
                         tabStyle={{ backgroundColor: 'white' }}>
                         <Text>Tab 4</Text>
                     </Tab>
                     <Tab
                         heading="Gaming"
                         activeTabStyle={{ backgroundColor: 'white' }}
-                        activeTextStyle={{ color: "black" }}
+                        activeTextStyle={{ fontFamily: 'mont', color: "black" }} 
+                        textStyle={{ fontFamily: 'mont'}}
                         tabStyle={{ backgroundColor: 'white' }}>
                         <Text>Tab 5</Text>
                     </Tab>
@@ -75,8 +80,8 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     header: {
-        fontWeight: "bold",
-        fontSize: 32
+        fontSize: 24,
+        fontFamily: 'mont'
     },
     nav: {
         backgroundColor: '#ffff'
