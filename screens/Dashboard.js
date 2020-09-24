@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, z } from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
 import { ApplicationProvider} from 'react-native-ui-kitten';
 import * as eva from '@eva-design/eva';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -11,6 +11,8 @@ import Create from './Create'
 import Profile from './Profile'
 import QaPost from './QaPost'
 import { createStackNavigator } from '@react-navigation/stack';
+import Firebase, { FirebaseProvider } from './utils'
+
 
 const Stack = createStackNavigator();
 
@@ -38,6 +40,7 @@ export default function Dashboard() {
 
     return (
         <ApplicationProvider mapping={eva.mapping} {...eva} theme={theme}>
+       
             <Tab.Navigator
                 barStyle={{ backgroundColor: navColor }}
             >
@@ -82,6 +85,7 @@ export default function Dashboard() {
                     }}
                 />
             </Tab.Navigator>
+  
         </ApplicationProvider>
 
     );

@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { Image, View, Text, Button } from 'react-native'
-import { Input } from 'native-base'
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
+import { Image, View } from 'react-native'
+import { Text, Button, Input } from 'react-native-ui-kitten'
+import ImagePicker from 'react-native-image-picker'
 import { withFirebaseHOC } from './utils'
 
 class AddPost extends Component {
@@ -34,32 +32,27 @@ class AddPost extends Component {
             console.error(e)
         }
     }
-    getPermissionAsync = async () => {
-        if (Constants.platform.ios) {
-            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-            if (status !== 'granted') {
-                alert('Sorry, we need camera roll permissions to make this work!');
+
+    selectImage = () => {
+        const options = {
+            noData: true
+        }
+        ImagePicker.launchImageLibrary(options, response => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker')
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error)
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton)
+            } else {
+                const source = { uri: response.uri }
+                console.log(source)
+                this.setState({
+                    image: source
+                })
             }
-        }
+        })
     }
-
-    selectImage = async () => {
-        try {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1
-        });
-
-        console.log(result);
-            this.setState({ image: result.uri });
-    }
-        catch(e){
-            console.log(e);
-        }
-    };
-    
 
     render() {
         return (
@@ -67,19 +60,18 @@ class AddPost extends Component {
                 <View>
                     {this.state.image ? (
                         <Image
-                            source={{uri: this.state.image}}
+                            source={this.state.image}
                             style={{ width: '100%', height: 300 }}
                         />
                     ) : (
                             <Button
                                 onPress={this.selectImage}
-                                title="Add an image"
                                 style={{
                                     alignItems: 'center',
                                     padding: 10,
                                     margin: 30
                                 }}>
-                                
+                                Add an image
                             </Button>
                         )}
                 </View>
@@ -97,8 +89,8 @@ class AddPost extends Component {
                         value={this.state.description}
                         onChangeText={description => this.onChangeDescription(description)}
                     />
-                    <Button status='success' onPress={this.onSubmit} title="Add post">
-                        
+                    <Button status='success' onPress={this.onSubmit}>
+                        Add post
           </Button>
                 </View>
             </View>
@@ -106,4 +98,4 @@ class AddPost extends Component {
     }
 }
 
-export default AddPost
+export default withFirebaseHOC(AddPost)
