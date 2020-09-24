@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Image, View, Text, Button } from 'react-native'
-import { Input } from 'react-native-ui-kitten'
+import { Image, View, Text, ScrollView } from 'react-native'
+import { Input, Button } from 'react-native-ui-kitten'
+import { Icon, Header} from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
@@ -60,19 +61,26 @@ class AddPost extends Component {
         }
     };
     
+    cancelImage = () => {
+        this.setState({ image: null })
+    };
 
     render() {
         return (
             <View style={{ flex: 1, marginTop: 60 }}>
+                <ScrollView>
                 <View>
                     {this.state.image ? (
-                        <Image
-                            source={{uri: this.state.image}}
-                            style={{ width: '100%', height: 300 }}
-                        />
-                    ) : (
+                        <View>
+                            <Icon onPress={this.cancelImage} style={{ color: "black", left: 10, margin: 5 }} name='x-circle' type="Feather"/>
+                            <Image
+                                source={{uri: this.state.image}}
+                                style={{ width: '100%', height: 300 }}
+                            />
+                        </View>
+                    ) : 
                             null
-                        )}
+                        }
                 </View>
                 <View style={{ marginTop: 80, alignItems: 'center' }}>
                     <Text category='h4'>Post Details</Text>
@@ -94,14 +102,18 @@ class AddPost extends Component {
                         style={{
                             alignItems: 'center',
                             padding: 10,
-                            margin: 30
+                            margin: 30,
                         }}>
-
+                        {"Add image"}
                     </Button>
-                    <Button status='success' onPress={this.onSubmit} title="Add post">
-                        
+                    <Button 
+                        status='success' 
+                        onPress={this.onSubmit} 
+                        title="Add post">
+                        {"Add post"}   
           </Button>
                 </View>
+                </ScrollView>
             </View>
         )
     }

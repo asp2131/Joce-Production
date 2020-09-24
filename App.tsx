@@ -46,6 +46,8 @@ export default function App() {
   const fetchFonts = () => {
     return Font.loadAsync({
       'mont-bold': require('./assets/font/mont-bold.ttf'),
+      "Roboto_medium": require('./assets/font/ssp-reg.ttf'),
+      "$text-font-family": require('./assets/font/ssp-reg.ttf'),
       'mont': require('./assets/font/ssp-reg.ttf'),
     });
   };
