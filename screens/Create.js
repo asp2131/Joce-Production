@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Image, View, Text, ScrollView } from 'react-native'
+import { Image, View, Text, ScrollView, TouchableHighlight } from 'react-native'
 import { Input, Button } from 'react-native-ui-kitten'
-import { Icon, Header} from 'native-base';
+import { Icon, Header, Card, CardItem} from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
+import BottomSheet from '../components/BottomSheet'
 import { withFirebaseHOC } from './utils'
 
 class AddPost extends Component {
@@ -96,22 +97,7 @@ class AddPost extends Component {
                         value={this.state.description}
                         onChangeText={description => this.onChangeDescription(description)}
                     />
-                    <Button
-                        onPress={this.selectImage}
-                        title="Add image"
-                        style={{
-                            alignItems: 'center',
-                            padding: 10,
-                            margin: 30,
-                        }}>
-                        {"Add image"}
-                    </Button>
-                    <Button 
-                        status='success' 
-                        onPress={this.onSubmit} 
-                        title="Add post">
-                        {"Add post"}   
-          </Button>
+                    <BottomSheet />
                 </View>
                 </ScrollView>
             </View>
