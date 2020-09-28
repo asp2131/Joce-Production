@@ -1,33 +1,33 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Image, View, Text, ScrollView, TouchableHighlight } from 'react-native'
-import { Input, Button } from 'react-native-ui-kitten'
-import { Icon, Header, Card, CardItem} from 'native-base';
+import { Icon, Content, Textarea, Form, Header, Right, Left, Button} from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import BottomSheet from '../components/BottomSheet'
+import { Layout } from 'react-native-ui-kitten';
 import { withFirebaseHOC } from './utils'
 
-class AddPost extends Component {
-    state = { image: null, title: '', description: '' }
+function AddPost (props) {
+    [state, setState] = useState({ image: null, title: '', description: '' })
 
-    onChangeTitle = title => {
-        this.setState({ title })
+    const onChangeTitle = title => {
+        setState({ title })
     }
-    onChangeDescription = description => {
-        this.setState({ description })
+    const onChangeDescription = description => {
+        setState({ description })
     }
 
-    onSubmit = async () => {
+    const onSubmit = async () => {
         try {
             const post = {
-                photo: this.state.image,
-                title: this.state.title,
-                description: this.state.description
+                photo: state.image,
+                title: state.title,
+                description: state.description
             }
-            this.props.firebase.uploadPost(post)
+            // props.firebase.uploadPost(post)
 
-            this.setState({
+            setState({
                 image: null,
                 title: '',
                 description: ''
@@ -36,16 +36,16 @@ class AddPost extends Component {
             console.error(e)
         }
     }
-    getPermissionAsync = async () => {
+    const getPermissionAsync = async () => {
         if (Constants.platform.ios) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
             if (status !== 'granted') {
-                alert('Sorry, we need camera roll permissions to make this work!');
+                alert('Sorry, we need camera roll permissions to make work!');
             }
         }
     }
 
-    selectImage = async () => {
+    const selectImage = async () => {
         try {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -55,54 +55,65 @@ class AddPost extends Component {
         });
 
         console.log(result);
-            this.setState({ image: result.uri });
+            setState({ image: result.uri });
     }
         catch(e){
             console.log(e);
         }
     };
     
-    cancelImage = () => {
-        this.setState({ image: null })
+    const cancelImage = () => {
+        setState({ image: null })
     };
 
-    render() {
+    
         return (
-            <View style={{ flex: 1, marginTop: 60 }}>
+            
+            <Layout >
                 <ScrollView>
-                <View>
-                    {this.state.image ? (
-                        <View>
-                            <Icon onPress={this.cancelImage} style={{ color: "black", left: 10, margin: 5 }} name='x-circle' type="Feather"/>
-                            <Image
-                                source={{uri: this.state.image}}
-                                style={{ width: '100%', height: 300 }}
-                            />
-                        </View>
-                    ) : 
-                            null
+                <Header androidStatusBarColor="#e6deff" iosBarStyle="#e6deff" style={{ backgroundColor: "#ffff" }}>
+                    <Left>
+                        <Button transparent>
+                            <Icon style={{ color: "black" }} name='arrow-back' />
+                        </Button>
+                    </Left>
+                    <Right>
+                        <Button transparent>
+                            <Text>Post</Text>
+                        </Button>
+                    </Right>
+                </Header> 
+                
+                  
+                
+                {/* <View , alignItems: 'center' }}> */}
+                    { <View>
+                        {state.image ? (
+                            <View>
+                                <Icon onPress={cancelImage} style={{ color: "black", left: 10, margin: 5 }} name='x-circle' type="Feather" />
+                                <Image
+                                    source={{ uri: state.image }}
+                                    style={{ width: '75%', height: 300 }}
+                                />
+                            </View>
+                        ) :
+                            <TouchableHighlight>
+                                <Button transparent/>
+                            </TouchableHighlight>
                         }
-                </View>
-                <View style={{ marginTop: 80, alignItems: 'center' }}>
-                    <Text category='h4'>Post Details</Text>
-                    <Input
-                        placeholder='Enter title of the post'
-                        style={{ margin: 20 }}
-                        value={this.state.title}
-                        onChangeText={title => this.onChangeTitle(title)}
-                    />
-                    <Input
-                        placeholder='Enter description'
-                        style={{ margin: 20 }}
-                        value={this.state.description}
-                        onChangeText={description => this.onChangeDescription(description)}
-                    />
-                    <BottomSheet />
-                </View>
+                    </View>} 
+                    <View style={{ marginTop: 130}} >
+                            <Form>
+                                <Textarea rowSpan={10}  placeholder="Write something.." />
+                            </Form>
+                        
+                    </View>
+                    <BottomSheet selectImage={selectImage} />
+                {/* </View> */}
                 </ScrollView>
-            </View>
+            </Layout>
         )
-    }
+    
 }
 
 export default AddPost
