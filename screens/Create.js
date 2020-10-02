@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Image, SafeAreaView, View, Text, ScrollView, TouchableHighlight, StyleSheet } from 'react-native'
-import { Icon, Card, CardItem, Thumbnail, Body, Textarea, Form, Header, Right, Left, Button} from 'native-base';
+import { Icon, Card, CardItem, Thumbnail, Body, Textarea, Form, Header, Title, Right, Left, Switch, Button} from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
@@ -9,7 +9,9 @@ import { Layout } from 'react-native-ui-kitten';
 
 function AddPost (props) {
     [state, setState] = useState({ image: null, title: '', description: '' })
-    
+    const [isEnabled, setIsEnabled] = useState(false);
+
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
     const onChangeTitle = title => {
         setState({ title })
@@ -98,6 +100,10 @@ function AddPost (props) {
                                     <Text style={styles.text} note>GeekyAnts</Text>
                                 </Body>
                             </Left>
+                                <Right>
+                                    <Switch onValueChange={toggleSwitch}
+                                        value={isEnabled}  />
+                                </Right>
                         </CardItem>
                   </Card>
                 
