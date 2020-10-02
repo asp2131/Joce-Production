@@ -18,7 +18,7 @@ export default function Example(props) {
         <View>
             <ListItem icon>
                 <Left>
-                    <Button style={{ backgroundColor: "#FF9501" }}>
+                    <Button onPress={props.selectImage} style={{ backgroundColor: "#FF9501" }}>
                         <Icon active name="camera" />
                     </Button>
                 </Left>
@@ -64,12 +64,11 @@ export default function Example(props) {
     return (
         <View
             style={{
-                flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
             }}
         >
-            <Button style={{marginTop: 200}} onPress={() => sheetRef.current.snapTo(0)} transparent>
+            <Button style={{marginTop: 210}} onPress={() => sheetRef.current.snapTo(0)} transparent>
                 <Icon name="more-horizontal" type="Feather"/>
             </Button>
             <BottomSheet

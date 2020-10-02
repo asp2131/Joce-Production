@@ -69,6 +69,7 @@ export default function Dashboard() {
                     component={Create}
                     options={{
                         tabBarLabel: 'Create',
+                        tabBarVisible: false,
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="pencil" color={color} size={20} />
                         ),

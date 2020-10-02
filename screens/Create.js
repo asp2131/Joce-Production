@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import { Image, View, Text, ScrollView, TouchableHighlight } from 'react-native'
-import { Icon, Content, Textarea, Form, Header, Right, Left, Button} from 'native-base';
+import React, { useState, useEffect } from 'react'
+import { Image, SafeAreaView, View, Text, ScrollView, TouchableHighlight, StyleSheet } from 'react-native'
+import { Icon, Card, CardItem, Thumbnail, Body, Textarea, Form, Header, Right, Left, Button} from 'native-base';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import BottomSheet from '../components/BottomSheet'
 import { Layout } from 'react-native-ui-kitten';
-import { withFirebaseHOC } from './utils'
 
 function AddPost (props) {
     [state, setState] = useState({ image: null, title: '', description: '' })
+    
 
     const onChangeTitle = title => {
         setState({ title })
@@ -46,6 +46,7 @@ function AddPost (props) {
     }
 
     const selectImage = async () => {
+        console.log("hello world")
         try {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -71,6 +72,10 @@ function AddPost (props) {
             
             <Layout >
                 <ScrollView>
+                    <SafeAreaView style={{
+                        marginTop: Constants.statusBarHeight,
+                        flex: 1
+                    }}>
                 <Header androidStatusBarColor="#e6deff" iosBarStyle="#e6deff" style={{ backgroundColor: "#ffff" }}>
                     <Left>
                         <Button transparent>
@@ -84,7 +89,17 @@ function AddPost (props) {
                     </Right>
                 </Header> 
                 
-                  
+                    <Card transparent>
+                        <CardItem>
+                            <Left>
+                                <Thumbnail source={{ uri: "https://source.unsplash.com/random" }} />
+                                <Body>
+                                    <Text style={styles.text}>NativeBase</Text>
+                                    <Text style={styles.text} note>GeekyAnts</Text>
+                                </Body>
+                            </Left>
+                        </CardItem>
+                  </Card>
                 
                 {/* <View , alignItems: 'center' }}> */}
                     { <View>
@@ -93,7 +108,7 @@ function AddPost (props) {
                                 <Icon onPress={cancelImage} style={{ color: "black", left: 10, margin: 5 }} name='x-circle' type="Feather" />
                                 <Image
                                     source={{ uri: state.image }}
-                                    style={{ width: '75%', height: 300 }}
+                                    style={{ width: '100%', height: 300 }}
                                 />
                             </View>
                         ) :
@@ -102,7 +117,7 @@ function AddPost (props) {
                             </TouchableHighlight>
                         }
                     </View>} 
-                    <View style={{ marginTop: 130}} >
+                    <View style={{ marginTop: 30}} >
                             <Form>
                                 <Textarea rowSpan={10}  placeholder="Write something.." />
                             </Form>
@@ -110,10 +125,17 @@ function AddPost (props) {
                     </View>
                     <BottomSheet selectImage={selectImage} />
                 {/* </View> */}
+                    </SafeAreaView>
                 </ScrollView>
             </Layout>
         )
     
 }
+
+const styles = StyleSheet.create({
+    text: {
+        fontFamily: "mont"
+    }
+});
 
 export default AddPost
