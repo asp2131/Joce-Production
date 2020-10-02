@@ -2,12 +2,15 @@ import React, { useRef, useState, useEffect } from 'react';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import {
     View,
+    ScrollView,
     Text,
     Dimensions,
     StyleSheet,
     TouchableOpacity,
     Platform,
 } from 'react-native';
+import StarRating from 'react-native-star-rating';
+
 
 const ENTRIES1 = [
     {
@@ -39,7 +42,8 @@ const ENTRIES1 = [
 const { width: screenWidth } = Dimensions.get('window');
 
 export default MyCarousel = props => {
-    const [entries, setEntries] = useState([]);
+    const [entries, setEntries] = useState(ENTRIES1);
+    const [starCount, setStarCount] = useState(0);
     const carouselRef = useRef(null);
 
     const goForward = () => {
@@ -47,9 +51,14 @@ export default MyCarousel = props => {
         carouselRef.current.snapToNext();
     };
 
-    useEffect(() => {
-        setEntries(ENTRIES1);
-    }, []);
+    const onStarRatingPress = (rating) => {
+        setStarCount(rating);
+        console.log(rating)
+    }
+
+    // useEffect(() => {
+    //     setEntries();
+    // }, []);
 
     const renderItem = ({ item, index }, parallaxProps) => {
         return (
@@ -64,12 +73,24 @@ export default MyCarousel = props => {
                 <Text style={styles.title} numberOfLines={2}>
                     {item.title}
                 </Text>
+                <StarRating
+                    disabled={false}
+                    emptyStar={'ios-star-outline'}
+                    fullStar={'ios-star'}
+                    halfStar={'ios-star-half'}
+                    iconSet={'Ionicons'}
+                    maxStars={5}
+                    rating={starCount}
+                    selectedStar={(rating) => onStarRatingPress(rating)}
+                    fullStarColor={'#fad859'}
+                />
             </View>
         );
     };
 
     return (
         <View style={styles.container}>
+            <ScrollView>
             <TouchableOpacity onPress={goForward}>
             </TouchableOpacity>
             <Carousel
@@ -81,6 +102,7 @@ export default MyCarousel = props => {
                 renderItem={renderItem}
                 hasParallaxImages={true}
             />
+            </ScrollView>
         </View>
     );
 };
@@ -107,7 +129,8 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     title: {
-        // fontFamily: "Roboto",
-        fontWeight: 'bold'
+        fontFamily: "mont",
+        padding: 10
+        // fontWeight: 'bold'
     }
 });
