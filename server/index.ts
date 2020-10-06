@@ -8,20 +8,18 @@ import { createConnection } from "typeorm";
 import { Post } from "./entities/Post";
 import { User } from "./entities/User";
 import {UserResolver} from "./resolvers/UserResolver"; 
-import { createUserLoader } from "./utils/createUserLoader";
+// import { createUserLoader } from "./utils/createUserLoader";
 
 const main = async () => {
   const conn = await createConnection({
-    type: "mongodb",
-    url: `mongodb+srv://dev:epD6au7LST8VALku@cluster0.dzvvu.gcp.mongodb.net/joce?retryWrites=true&w=majority`,
+    type: "postgres",
+    url: "postgresql://ulnmey4j2kgpe9k45mtz:MGlziUJpsaLDAGYNCnb3@brbpvg72wcxztaxjapif-postgresql.services.clever-cloud.com:5432/brbpvg72wcxztaxjapif",
     useNewUrlParser: true,
     synchronize: true,
     logging: true,
     entities: [Post, User]
   });
-  // await conn.runMigrations();
 
-  // await Post.delete({});
 
   const app = express();
 
@@ -42,7 +40,7 @@ const main = async () => {
       req,
       res,
       // redis,
-      userLoader: createUserLoader(),
+    
     }),
   });
 

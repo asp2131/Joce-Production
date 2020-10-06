@@ -13,7 +13,7 @@ import {
 import { MyContext } from "../types";
 import { User } from "../entities/User";
 // import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
-import { getConnection } from "typeorm";
+import { getConnection, getMongoManager } from "typeorm";
 
 @ObjectType()
 class FieldError {
@@ -62,31 +62,38 @@ export class UserResolver {
         //     return null;
         // }
 
-        return User.findOne();
+        return "log in route"
     }
 
   
 
     @Mutation(() => UserResponse)
     async register(
-        // @Arg("options") options: UsernamePasswordInput,
-        @Ctx() { req }: MyContext
-    ): Promise<UserResponse> {
+        @Arg("email", { nullable: false }) email?: string,
+        @Arg("username", { nullable: true }) username?: string,
+        @Arg("id_google", { nullable: true }) id_google?: string,
+        
+    ): Object<UserResponse> {
         // const errors = validateRegister(options);
         
 
+        let newUser: object;
         let user;
+        // let user = {email: email, username: username, id_google: id_google} as User;
+        
         try {
-            // User.create({}).save()
+            // const manager = getMongoManager();
+            // newUser = await manager.save(user);
+          
             const result = await getConnection()
                 .createQueryBuilder()
                 .insert()
                 .into(User)
                 .values({
-                    username: req.username,
-                    email: req.email,
+                    email: email,
+                    username: username,
+                    id_google: id_google
                 })
-                .returning("*")
                 .execute();
             user = result.raw[0];
         } catch (err) {
@@ -108,35 +115,35 @@ export class UserResolver {
         // this will set a cookie on the user
         // keep them logged in
         // req.session.userId = user.id;
-
-        return { user };
+        return {user};
+        
     }
 
-    @Mutation(() => UserResponse)
-    async login(
-        @Arg("usernameOrEmail") usernameOrEmail: string,
-        @Ctx() { req }: MyContext
-    ): Promise<UserResponse> {
-        const user = await User.findOne(
-            usernameOrEmail.includes("@")
-                ? { where: { email: usernameOrEmail } }
-                : { where: { username: usernameOrEmail } }
-        );
-        if (!user) {
-            return {
-                errors: [
-                    {
-                        field: "usernameOrEmail",
-                        message: "that username doesn't exist",
-                    },
-                ],
-            };
-        }
+    // @Mutation(() => UserResponse)
+    // async login(
+    //     @Arg("usernameOrEmail") usernameOrEmail: string,
+    //     @Ctx() { req }: MyContext
+    // ): Promise<UserResponse> {
+    //     const user = await User.findOne(
+    //         usernameOrEmail.includes("@")
+    //             ? { where: { email: usernameOrEmail } }
+    //             : { where: { username: usernameOrEmail } }
+    //     );
+    //     if (!user) {
+    //         return {
+    //             errors: [
+    //                 {
+    //                     field: "usernameOrEmail",
+    //                     message: "that username doesn't exist",
+    //                 },
+    //             ],
+    //         };
+    //     }
        
 
-        return {
-            user,
-        };
-    }
+        // return {
+        //     user,
+        // };
+    // }
 
 }

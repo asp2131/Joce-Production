@@ -74,14 +74,14 @@ CREATE TABLE rating_types (
   five_star varchar(255)
 );
 
-CREATE TABLE questions (
+CREATE TABLE post (
   id SERIAL PRIMARY KEY ,
   id_user int,
   char_count int,
   text varchar(200)
 );
 
-CREATE TABLE answers (
+CREATE TABLE comment (
   id SERIAL PRIMARY KEY,
   id_user int,
   id_question int

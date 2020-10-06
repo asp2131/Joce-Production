@@ -26,11 +26,11 @@ export class User extends BaseEntity {
     id_google!: string;
 
     @Field(() => String)
-    @Column({ unique: true })
+    @Column({ unique: true, nullable: false })
     email!: string;
 
     @Field(() => String)
-    @Column({ unique: true })
+    @Column({ nullable: true })
     bio: string;
 
     @OneToMany(() => Post, (post) => post.creator)
@@ -38,10 +38,10 @@ export class User extends BaseEntity {
 
 
     @Field(() => String)
-    @CreateDateColumn()
+    @CreateDateColumn({ nullable: true })
     createdAt: Date;
 
     @Field(() => String)
-    @UpdateDateColumn()
+    @UpdateDateColumn({ nullable: true })
     updatedAt: Date;
 }
