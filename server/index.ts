@@ -7,17 +7,22 @@ import cors from "cors";
 import { createConnection } from "typeorm";
 import { Post } from "./entities/Post";
 import { User } from "./entities/User";
+import { Location } from "./entities/Location";
+import { Rating } from "./entities/Rating";
+import { Poll } from "./entities/Poll";
+import { Comment } from "./entities/Comment";
+import { Follower } from "./entities/Follower";
 import {UserResolver} from "./resolvers/UserResolver"; 
 // import { createUserLoader } from "./utils/createUserLoader";
 
 const main = async () => {
   const conn = await createConnection({
     type: "postgres",
-    url: "postgresql://ulnmey4j2kgpe9k45mtz:MGlziUJpsaLDAGYNCnb3@brbpvg72wcxztaxjapif-postgresql.services.clever-cloud.com:5432/brbpvg72wcxztaxjapif",
-    useNewUrlParser: true,
+    url:
+      "postgresql://ulnmey4j2kgpe9k45mtz:MGlziUJpsaLDAGYNCnb3@brbpvg72wcxztaxjapif-postgresql.services.clever-cloud.com:5432/brbpvg72wcxztaxjapif",
     synchronize: true,
     logging: true,
-    entities: [Post, User]
+    entities: [Post, User, Location, Rating, Poll, Comment, Follower],
   });
 
 

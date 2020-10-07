@@ -6,28 +6,27 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     BaseEntity,
-    ManyToOne, OneToMany
+    ManyToOne,
 } from "typeorm";
 import { User } from "./User";
-import { Comment } from "./Comment";
 
 @ObjectType()
 @Entity()
-export class Post extends BaseEntity {
+export class Location extends BaseEntity {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Field(() => String, { nullable: true })
+  latitude: string | null; // 1 or -1 or null
+
   @Field(() => String)
   @Column()
-  text!: string;
+  longitude: string;
 
-  @Field(() => Int, { nullable: true })
-  voteStatus: number | null; // 1 or -1 or null
-
-  @Field(() => Int)
-  @Column()
-  creatorId: number;
+  @Field()
+  @ManyToOne(() => User, (user) => user.location)
+  creator: String;
 
   @Field(() => String)
   @CreateDateColumn()
@@ -36,12 +35,4 @@ export class Post extends BaseEntity {
   @Field(() => String)
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @Field()
-  @ManyToOne(() => User, (user) => user.posts)
-  creator: User;
-
-  @Field()
-  @OneToMany(() => Comment, (comment) => comment.post)
-  comments: Comment;
 }

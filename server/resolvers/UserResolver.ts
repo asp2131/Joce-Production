@@ -73,7 +73,7 @@ export class UserResolver {
         @Arg("username", { nullable: true }) username?: string,
         @Arg("id_google", { nullable: true }) id_google?: string,
         
-    ): Object<UserResponse> {
+    ){
         // const errors = validateRegister(options);
         
 
