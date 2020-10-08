@@ -23,8 +23,8 @@ export class Comment extends BaseEntity {
   media: string;
 
   @Field()
-  @ManyToOne(() => User, (user) => user.polls)
-  user: User;
+  @ManyToOne(() => User, (user) => user.comments)
+  creator: String;
 
   @Field()
   @ManyToOne(() => Post, (post) => post.comments)

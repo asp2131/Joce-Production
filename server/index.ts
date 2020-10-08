@@ -5,15 +5,16 @@ import { buildSchema } from "type-graphql";
 // import session from "express-session";
 import cors from "cors";
 import { createConnection } from "typeorm";
-import { Post } from "./entities/Post";
-import { User } from "./entities/User";
-import { Location } from "./entities/Location";
-import { Rating } from "./entities/Rating";
-import { Poll } from "./entities/Poll";
-import { Comment } from "./entities/Comment";
-import { Follower } from "./entities/Follower";
-import {UserResolver} from "./resolvers/UserResolver"; 
-// import { createUserLoader } from "./utils/createUserLoader";
+import { UserResolver } from "./resolvers/UserResolver";
+import {
+  Post,
+  User,
+  Location,
+  Rating,
+  Poll,
+  Comment,
+  Follower,
+} from "./entities";
 
 const main = async () => {
   const conn = await createConnection({
@@ -25,16 +26,14 @@ const main = async () => {
     entities: [Post, User, Location, Rating, Poll, Comment, Follower],
   });
 
-
   const app = express();
 
   app.use(
     cors({
-      origin: 'http://localhost:3000/',
+      origin: "http://localhost:3000/",
       credentials: true,
     })
   );
-
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
@@ -45,7 +44,6 @@ const main = async () => {
       req,
       res,
       // redis,
-    
     }),
   });
 

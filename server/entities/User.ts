@@ -12,6 +12,8 @@ import {Post} from './Post'
 import {Poll} from './Poll'
 import { Follower } from "./Follower";
 import { Location } from "./Location";
+import { Comment } from "./Comment";
+
 
 @ObjectType()
 @Entity()
@@ -59,4 +61,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Follower, (follower) => follower.followee)
   followers: Follower[];
+
+  @OneToMany(() => Comment, (comment) => comment.creator)
+  comments: Comment[];
 }
