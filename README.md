@@ -55,7 +55,7 @@ View the project roadmap [here](https://github.com/serverusnola/Guardian/issues)
 
 ## Team
 
-  - __Product Owner__: Akin Pounds
+  - __Product Owner__: Joshua Brumfield, Akin Pounds
   - __Scrum Master__: Akin Pounds
   - __Development Team Members__: Akin Pounds, Michael Bazille, Eric O'neal
 
