@@ -1,4 +1,4 @@
-# Joce   ![](https://res.cloudinary.com/https-pilot-tune-herokuapp-com/image/upload/v1602265727/template_primary_2_czke5t.png)
+# ![](https://res.cloudinary.com/https-pilot-tune-herokuapp-com/image/upload/v1602265727/template_primary_2_czke5t.png)
 
   A social media application centered around polling and networking with others
   
