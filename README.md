@@ -4,7 +4,7 @@
   ![](https://res.cloudinary.com/https-pilot-tune-herokuapp-com/image/upload/v1602264321/Joce_-_Portrait_-_Master_-_RGB_vejqpl_h75hky.svg)
   ![](https://res.cloudinary.com/https-pilot-tune-herokuapp-com/image/upload/v1602263985/Screenshot_20200825-155838_Expo_fz2aic.jpg)
   ![](https://res.cloudinary.com/https-pilot-tune-herokuapp-com/image/upload/v1602264465/image_wkjh7r.png)
-  ![](https://res.cloudinary.com/https-pilot-tune-herokuapp-com/image/upload/v1602264397/Screenshot_20201002-161131_Expo_tglydh.jpg)
+  <img src=https://res.cloudinary.com/https-pilot-tune-herokuapp-com/image/upload/v1602264397/Screenshot_20201002-161131_Expo_tglydh.jpg" />
   
 
 ## Table of Contents
