@@ -17,7 +17,7 @@
 - Start the server by running: 
 
 ```sh
-node server/server.js
+npm run dev
 ```
 
 - Start the app by running: 
