@@ -35,7 +35,7 @@ expo start
 - Node 12.15.3
 - Postgresql 7.9.0
 - Expo 36.0.0
-- React 16.5.0
+- React Native 16.5.0
 - Express 4.16.4
 - GraphQL 3.0.4
 
