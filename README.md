@@ -1,5 +1,7 @@
 # Joce
   A social media application centered around polling and networking with others
+  
+  ![alt text](https://res.cloudinary.com/https-pilot-tune-herokuapp-com/image/upload/v1598374262/Joce_-_Portrait_-_Master_-_RGB_vejqpl.svg)
 
 ## Table of Contents
 
