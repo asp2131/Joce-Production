@@ -1,31 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, View, Image } from "react-native";
 import { Button } from "react-native-ui-kitten";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
-import {Toast} from 'native-base'
-import {AppStyles} from './utils'
+import { Toast } from "native-base";
+import { AppStyles } from "./utils";
 
+function SignupScreen({ googleUser, setGoogleUser }) {
+  const [crendentials, setCredentials] = useState({
+    loading: true,
+    username: "",
+    bio: "",
+  });
 
-class SignupScreen extends React.Component {
-  constructor(props) {
-    super(props);
+  const onRegister = () => {};
 
-    this.state = {
-      loading: true,
-      username: "",
-      phone: "",
-      email: "",
-      bio: "",
-    };
-  }
-
-  componentWillUnmount() {}
-
-  onRegister = () => {};
-
-  getPermissionAsync = async () => {
+  const getPermissionAsync = async () => {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== "granted") {
@@ -34,7 +25,7 @@ class SignupScreen extends React.Component {
     }
   };
 
-  selectImage = async () => {
+  const selectImage = async () => {
     console.log("hello world");
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -46,7 +37,7 @@ class SignupScreen extends React.Component {
 
       //   console.log(result);
       //   googleUser.photoUrl = result.uri;
-      this.props.setGoogleUser((prevUser) => ({
+      setGoogleUser((prevUser) => ({
         ...prevUser,
         photoUrl: result.uri,
       }));
@@ -55,54 +46,57 @@ class SignupScreen extends React.Component {
     }
   };
 
-  render() {
-    const { googleUser } = this.props;
-    return (
-      <View style={styles.container}>
-        <Image
-          style={styles.logo}
-          source={require("../assets/text-logo.png")}
+  return (
+    <View style={styles.container}>
+      <Image style={styles.logo} source={require("../assets/text-logo.png")} />
+      <Text style={[styles.title, styles.leftTitle]}>Create new profile</Text>
+      <Image style={styles.userImage} source={{ uri: googleUser.photoUrl }} />
+      <View style={styles.InputContainer}>
+        <TextInput
+          style={styles.body}
+          placeholder="User Name"
+          onChangeText={(text) =>
+            setCredentials((prevCredentials) => ({
+              ...prevCredentials,
+              username: text,
+            }))
+          }
+          value={crendentials.username}
+          placeholderTextColor={AppStyles.color.purple}
+          underlineColorAndroid="transparent"
         />
-        <Text style={[styles.title, styles.leftTitle]}>Create new profile</Text>
-        <Image style={styles.userImage} source={{ uri: googleUser.photoUrl }} />
-
-        <View style={styles.InputContainer}>
-          <TextInput
-            style={styles.body}
-            placeholder="User Name"
-            onChangeText={(text) => this.setState({ username: text })}
-            value={this.state.username}
-            placeholderTextColor={AppStyles.color.purple}
-            underlineColorAndroid="transparent"
-          />
-        </View>
-        <View style={styles.InputContainer}>
-          <TextInput
-            style={styles.bio}
-            placeholder="Bio"
-            onChangeText={(text) => this.setState({ bio: text })}
-            value={this.state.bio}
-            placeholderTextColor={AppStyles.color.purple}
-            underlineColorAndroid="transparent"
-          />
-        </View>
-        <Button
-          appearance="ghost"
-          style={styles.facebookText}
-          onPress={() => this.selectImage()}
-        >
-          Upload Different Profile Picture
-        </Button>
-        <Button
-          appearance="ghost"
-          style={styles.facebookText}
-          onPress={() => this.onRegister()}
-        >
-          Create Account
-        </Button>
       </View>
-    );
-  }
+      <View style={styles.InputContainer}>
+        <TextInput
+          style={styles.bio}
+          placeholder="Bio"
+          onChangeText={(text) =>
+            setCredentials((prevCredentials) => ({
+              ...prevCredentials,
+              bio: text,
+            }))
+          }
+          value={crendentials.bio}
+          placeholderTextColor={AppStyles.color.purple}
+          underlineColorAndroid="transparent"
+        />
+      </View>
+      <Button
+        appearance="ghost"
+        style={styles.facebookText}
+        onPress={() => selectImage()}
+      >
+        Upload Different Profile Picture
+      </Button>
+      <Button
+        appearance="ghost"
+        style={styles.facebookText}
+        onPress={() => onRegister()}
+      >
+        Create Account
+      </Button>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
