@@ -26,10 +26,8 @@ export default function Dashboard() {
   const [theme, setTheme] = useState(eva.light);
   //saves the state of user => will eventually be the intiall value of user context
   const [googleUser, setGoogleUser] = useState(undefined);
-  const [googleAvatar, setGoogleAvatar] = useState(null);
-  if (typeof googleUser === 'object'){
-    setGoogleAvatar(googleUser.photoUrl);
-  }
+  // const [googleAvatar, setGoogleAvatar] = useState(null);
+
     // const [navColor, setNav] = React.useState("#8e44ad");
     // const [brightness, setBrightness] = React.useState("rgb(35, 43, 67)");
 
@@ -113,7 +111,13 @@ function LoginStack({ setGoogleUser, googleUser }) {
         {(props) => <Login {...props} setGoogleUser={setGoogleUser} />}
       </Stack.Screen>
       <Stack.Screen name="Register">
-        {(props) => <Register {...props} googleUser={googleUser} />}
+        {(props) => (
+          <Register
+            {...props}
+            setGoogleUser={setGoogleUser}
+            googleUser={googleUser}
+          />
+        )}
       </Stack.Screen>
       <Stack.Screen name="ViewPost" component={QaPost} />
     </Stack.Navigator>

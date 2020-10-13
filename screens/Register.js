@@ -1,6 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, TextInput, View, Image } from "react-native";
 import { Button } from "react-native-ui-kitten";
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+import Constants from "expo-constants";
 
 const AppStyles = {
   color: {
@@ -57,22 +60,50 @@ class SignupScreen extends React.Component {
     };
   }
 
-  
+  componentWillUnmount() {}
 
-  componentWillUnmount() {
-    
-  }
+  onRegister = () => {};
 
-  onRegister = () => {
-    
+  getPermissionAsync = async () => {
+    if (Constants.platform.ios) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== "granted") {
+        alert("Sorry, we need camera roll permissions to make work!");
+      }
+    }
+  };
+
+  selectImage = async () => {
+    console.log("hello world");
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      //   console.log(result);
+      //   googleUser.photoUrl = result.uri;
+      this.props.setGoogleUser((prevUser) => ({
+        ...prevUser,
+        photoUrl: result.uri,
+      }));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   render() {
-    const { googleAvatar } = this.props;
+    const { googleUser } = this.props;
     return (
       <View style={styles.container}>
-        <Text style={[styles.title, styles.leftTitle]}>Create new account</Text>
-        <Image style={styles.userImage} source={{ uri: googleAvatar }} />
+        <Image
+          style={styles.logo}
+          source={require("../assets/text-logo.png")}
+        />
+        <Text style={[styles.title, styles.leftTitle]}>Create new profile</Text>
+        <Image style={styles.userImage} source={{ uri: googleUser.photoUrl }} />
 
         <View style={styles.InputContainer}>
           <TextInput
@@ -97,20 +128,21 @@ class SignupScreen extends React.Component {
         <Button
           appearance="ghost"
           style={styles.facebookText}
+          onPress={() => this.selectImage()}
+        >
+          Upload Different Profile Picture
+        </Button>
+        <Button
+          appearance="ghost"
+          style={styles.facebookText}
           onPress={() => this.onRegister()}
         >
           Create Account
         </Button>
-        <Image
-          style={styles.logo}
-          source={require("../assets/text-logo.png")}
-        />
       </View>
     );
   }
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -130,6 +162,12 @@ const styles = StyleSheet.create({
     color: AppStyles.color.tint,
     marginTop: 75,
     marginBottom: 20,
+  },
+  logo: {
+    top: 75,
+    width: 55,
+    height: 55,
+    resizeMode: "contain",
   },
   leftTitle: {
     alignSelf: "stretch",
@@ -187,7 +225,7 @@ const styles = StyleSheet.create({
   },
   facebookText: {
     color: AppStyles.color.purple,
-    marginTop: 50,
+    marginTop: 30,
   },
 });
 
