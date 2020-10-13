@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 
 
 
-export default function Login(props) {
+export default function Login({setUser}) {
 
   let [loginStatus, setStatus] = useState('');
 
@@ -34,7 +34,7 @@ export default function Login(props) {
           // The result is almost identical to `updateTodoResult` with the exception
           // of `result.fetching` not being set.
           // console.log(loginresult.data.login.user)
-          console.log(props)
+          console.log(loginresult.data.login.user)
           return loginresult.data.login.user
         })
           .catch(e => console.log(e));

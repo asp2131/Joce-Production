@@ -109,6 +109,7 @@ function LoginStack({setUser}) {
         {(props) => <Login {...props} setUser={setUser} />}
       </Stack.Screen>
       {/* <Stack.Screen name="Register" component={Register} /> */}
+      <Stack.Screen name="ViewPost" component={QaPost} />
     </Stack.Navigator>
   );
 }
