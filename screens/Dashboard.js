@@ -12,6 +12,7 @@ import Profile from "./Profile";
 import QaPost from "./QaPost";
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./Login";
+import Register from './Register'
 import { createClient, Provider } from "urql";
 
 const client = createClient({ url: "http://192.168.0.97:3000/graphql" });
@@ -108,7 +109,7 @@ function LoginStack({setUser}) {
       <Stack.Screen name="Login">
         {(props) => <Login {...props} setUser={setUser} />}
       </Stack.Screen>
-      {/* <Stack.Screen name="Register" component={Register} /> */}
+      <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="ViewPost" component={QaPost} />
     </Stack.Navigator>
   );

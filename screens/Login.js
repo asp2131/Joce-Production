@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 
 
 export default function Login({setUser}) {
-
+  const navigation = useNavigation();
   let [loginStatus, setStatus] = useState('');
 
   const [loginUserResult, loginUser] = useMutation(mutations.LOGIN);
@@ -34,8 +34,10 @@ export default function Login({setUser}) {
           // The result is almost identical to `updateTodoResult` with the exception
           // of `result.fetching` not being set.
           // console.log(loginresult.data.login.user)
-          console.log(loginresult.data.login.user)
-          return loginresult.data.login.user
+          // console.log(loginresult.data.login.user)
+          if(loginresult.data.login.user === null){
+              navigation.navigate("Register");
+          }
         })
           .catch(e => console.log(e));
         // setStatus(loginResult)
@@ -52,10 +54,18 @@ export default function Login({setUser}) {
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={require("../assets/text-logo.png")} />
-      <Button title="Login with Google" onPress={() => { return loginUser(signInWithGoogleAsync()) }}>
+      <Button
+        appearance="ghost"
+        status="success"
+        style={{size: 100}}
+        title="Login with Google"
+        onPress={() => {
+          return loginUser(signInWithGoogleAsync());
+        }}
+      >
         {"Login With Google"}
       </Button>
-        <Text>{loginStatus}</Text>
+      <Text>{loginStatus}</Text>
       <Image style={styles.rocket} source={require("../assets/picsart.png")} />
       <StatusBar style="auto" />
     </View>
