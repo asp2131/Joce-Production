@@ -4,48 +4,9 @@ import { Button } from "react-native-ui-kitten";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
+import {Toast} from 'native-base'
+import {AppStyles} from './utils'
 
-const AppStyles = {
-  color: {
-    main: "#5ea23a",
-    text: "black",
-    purple: "#8e44ad",
-    title: "#464646",
-    subtitle: "#545454",
-    categoryTitle: "#161616",
-    tint: "#ff5a66",
-    description: "#bbbbbb",
-    filterTitle: "#8a8a8a",
-    starRating: "#2bdf85",
-    location: "#a9a9a9",
-    white: "white",
-    facebook: "#4267b2",
-    grey: "grey",
-    greenBlue: "#00aea8",
-    placeholder: "#a0a0a0",
-    background: "#f2f2f2",
-    blue: "#3293fe",
-  },
-  fontSize: {
-    title: 30,
-    content: 20,
-    normal: 16,
-  },
-  buttonWidth: {
-    main: "70%",
-  },
-  textInputWidth: {
-    main: "80%",
-  },
-  fontName: {
-    main: "Noto Sans",
-    bold: "Noto Sans",
-  },
-  borderRadius: {
-    main: 25,
-    small: 5,
-  },
-};
 
 class SignupScreen extends React.Component {
   constructor(props) {
@@ -53,7 +14,7 @@ class SignupScreen extends React.Component {
 
     this.state = {
       loading: true,
-      fullname: "",
+      username: "",
       phone: "",
       email: "",
       bio: "",
@@ -109,8 +70,8 @@ class SignupScreen extends React.Component {
           <TextInput
             style={styles.body}
             placeholder="User Name"
-            onChangeText={(text) => this.setState({ fullname: text })}
-            value={this.state.fullname}
+            onChangeText={(text) => this.setState({ username: text })}
+            value={this.state.username}
             placeholderTextColor={AppStyles.color.purple}
             underlineColorAndroid="transparent"
           />
@@ -165,8 +126,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     top: 75,
-    width: 55,
-    height: 55,
+    width: 75,
+    height: 75,
     resizeMode: "contain",
   },
   leftTitle: {
