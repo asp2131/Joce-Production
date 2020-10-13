@@ -47,6 +47,10 @@ const main = async () => {
     }),
   });
 
+  // app.get('/', (req,res)=>{
+  //   res.send('on')
+  // })
+
   apolloServer.applyMiddleware({
     app,
     cors: false,

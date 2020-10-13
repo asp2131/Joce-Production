@@ -11,7 +11,11 @@ import Create from "./Create";
 import Profile from "./Profile";
 import QaPost from "./QaPost";
 import { createStackNavigator } from "@react-navigation/stack";
-import Firebase, { FirebaseProvider } from "./utils";
+import Login from './Login'
+import { createClient, Provider } from 'urql';
+
+
+const client = createClient({ url: 'http://192.168.0.97:3000/graphql' });
 
 const Stack = createStackNavigator();
 
@@ -35,8 +39,10 @@ export default function Dashboard() {
   };
 
   return (
+    <Provider value={client} > 
     <ApplicationProvider mapping={eva.mapping} {...eva} theme={theme}>
-      <Tab.Navigator barStyle={{ backgroundColor: navColor }}>
+      <Login />
+      {/* <Tab.Navigator barStyle={{ backgroundColor: navColor }}>
         <Tab.Screen
           name="Feed"
           children={() => (
@@ -84,8 +90,9 @@ export default function Dashboard() {
             ),
           }}
         />
-      </Tab.Navigator>
+      </Tab.Navigator> */}
     </ApplicationProvider>
+    </Provider >
   );
 }
 

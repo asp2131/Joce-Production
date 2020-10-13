@@ -1,22 +1,68 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, {useState} from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
-import * as eva from "@eva-design/eva";
-import { ApplicationProvider, Layout, Button } from "@ui-kitten/components";
+import { Button } from "react-native-ui-kitten";
+import * as Google from "expo-google-app-auth";
+import Constants from "expo-constants";
+import { useMutation } from "urql";
+const { ANDROID_CLIENT_ID, IOS_CLIENT_ID } = Constants.manifest.extra;
 
-export default function Login(props) {
-  const { signInWithGoogleAsync } = props;
+
+
+export default function Login() {
+
+  let [loginStatus, setStatus] = useState('');
+
+  const LOGIN = `
+        mutation ($email: String!, $id_google:String!) {
+            login(email: $email, id_google: $id_google) {
+   	          user {
+                email,
+                id_google 
+             }
+            }
+          }       
+        `;
+
+  const [loginUserResult, loginUser] = useMutation(LOGIN);
   /*
-  functions allows users to sign in with google
+  functions allows users to sign in/sign up with google
   @return: User, accessToken, statusType
   */
+  const signInWithGoogleAsync = async () => {
+    try {
+      const { type, accessToken, user } = await Google.logInAsync({
+        androidClientId: ANDROID_CLIENT_ID,
+        iosClientId: IOS_CLIENT_ID,
+        scopes: ["profile", "email"],
+      });
+      if (type === "success") {
+        
+        loginUser({email: user.email, id_google: user.id})
+          .then(result => {
+          // The result is almost identical to `updateTodoResult` with the exception
+          // of `result.fetching` not being set.
+          console.log(result.data.login)
+        })
+          .catch(e => console.log(e));
+        // setStatus(loginResult)
+        
+        return {accessToken: accessToken, user: user};
+      } 
+      
+    } catch (e) {
+      return { error: true };
+    }
+  };
+
 
   return (
     <View style={styles.container}>
       <Image style={styles.logo} source={require("../assets/text-logo.png")} />
-      <Button title="Login with Google" onPress={signInWithGoogleAsync}>
+      <Button title="Login with Google" onPress={() => { return loginUser(signInWithGoogleAsync()) }}>
         {"Login With Google"}
       </Button>
+        <Text>{loginStatus}</Text>
       <Image style={styles.rocket} source={require("../assets/picsart.png")} />
       <StatusBar style="auto" />
     </View>
