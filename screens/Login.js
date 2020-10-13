@@ -5,26 +5,17 @@ import { Button } from "react-native-ui-kitten";
 import * as Google from "expo-google-app-auth";
 import Constants from "expo-constants";
 import { useMutation } from "urql";
+import {mutations} from './utils'
 const { ANDROID_CLIENT_ID, IOS_CLIENT_ID } = Constants.manifest.extra;
+import { useNavigation } from "@react-navigation/native";
 
 
 
-export default function Login() {
+export default function Login(props) {
 
   let [loginStatus, setStatus] = useState('');
 
-  const LOGIN = `
-        mutation ($email: String!, $id_google:String!) {
-            login(email: $email, id_google: $id_google) {
-   	          user {
-                email,
-                id_google 
-             }
-            }
-          }       
-        `;
-
-  const [loginUserResult, loginUser] = useMutation(LOGIN);
+  const [loginUserResult, loginUser] = useMutation(mutations.LOGIN);
   /*
   functions allows users to sign in/sign up with google
   @return: User, accessToken, statusType
@@ -39,10 +30,12 @@ export default function Login() {
       if (type === "success") {
         
         loginUser({email: user.email, id_google: user.id})
-          .then(result => {
+          .then(loginresult => {
           // The result is almost identical to `updateTodoResult` with the exception
           // of `result.fetching` not being set.
-          console.log(result.data.login)
+          // console.log(loginresult.data.login.user)
+          console.log(props)
+          return loginresult.data.login.user
         })
           .catch(e => console.log(e));
         // setStatus(loginResult)

@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ApplicationProvider } from "react-native-ui-kitten";
 import * as eva from "@eva-design/eva";
@@ -11,38 +11,40 @@ import Create from "./Create";
 import Profile from "./Profile";
 import QaPost from "./QaPost";
 import { createStackNavigator } from "@react-navigation/stack";
-import Login from './Login'
-import { createClient, Provider } from 'urql';
+import Login from "./Login";
+import { createClient, Provider } from "urql";
 
-
-const client = createClient({ url: 'http://192.168.0.97:3000/graphql' });
+const client = createClient({ url: "http://192.168.0.97:3000/graphql" });
 
 const Stack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
 export default function Dashboard() {
-  const [theme, setTheme] = React.useState(eva.light);
-  const [navColor, setNav] = React.useState("#8e44ad");
-  const [brightness, setBrightness] = React.useState("rgb(35, 43, 67)");
-  const [logo, setLogo] = React.useState(true);
+  const [logo, setLogo] = useState(true);
+  const [theme, setTheme] = useState(eva.light);
+  //saves the state of user => will eventually be the intiall value of user context
+  const [user, setUser] = useState(undefined);
 
-  const toggleTheme = () => {
-    const nextTheme = theme === eva.light ? eva.dark : eva.light;
-    const newNavColor = navColor === "#8e44ad" ? "rgb(35, 43, 67)" : "#8e44ad";
-    const sunColor =
-      brightness === "rgb(35, 43, 67)" ? "#8e44ad" : "rgb(35, 43, 67)";
-    setLogo(!logo);
-    setBrightness(sunColor);
-    setTheme(nextTheme);
-    setNav(newNavColor);
-  };
+  // const [navColor, setNav] = React.useState("#8e44ad");
+  // const [brightness, setBrightness] = React.useState("rgb(35, 43, 67)");
+
+  // const toggleTheme = () => {
+  //   const nextTheme = theme === eva.light ? eva.dark : eva.light;
+  //   const newNavColor = navColor === "#8e44ad" ? "rgb(35, 43, 67)" : "#8e44ad";
+  //   const sunColor =
+  //     brightness === "rgb(35, 43, 67)" ? "#8e44ad" : "rgb(35, 43, 67)";
+  //   setLogo(!logo);
+  //   setBrightness(sunColor);
+  //   setTheme(nextTheme);
+  //   setNav(newNavColor);
+  // };
 
   return (
-    <Provider value={client} > 
-    <ApplicationProvider mapping={eva.mapping} {...eva} theme={theme}>
-      <Login />
-      {/* <Tab.Navigator barStyle={{ backgroundColor: navColor }}>
+    <Provider value={client}>
+      <ApplicationProvider mapping={eva.mapping} {...eva} theme={theme}>
+        <LoginStack setUser={setUser} />
+        {/* <Tab.Navigator barStyle={{ backgroundColor: navColor }}>
         <Tab.Screen
           name="Feed"
           children={() => (
@@ -91,8 +93,23 @@ export default function Dashboard() {
           }}
         />
       </Tab.Navigator> */}
-    </ApplicationProvider>
-    </Provider >
+      </ApplicationProvider>
+    </Provider>
+  );
+}
+
+function LoginStack({setUser}) {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="Login">
+        {(props) => <Login {...props} setUser={setUser} />}
+      </Stack.Screen>
+      {/* <Stack.Screen name="Register" component={Register} /> */}
+    </Stack.Navigator>
   );
 }
 
