@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 
 
 
-export default function Login({setUser}) {
+export default function Login({setGoogleUser}) {
   const navigation = useNavigation();
   let [loginStatus, setStatus] = useState('');
 
@@ -35,6 +35,8 @@ export default function Login({setUser}) {
           // of `result.fetching` not being set.
           // console.log(loginresult.data.login.user)
           // console.log(loginresult.data.login.user)
+          console.log(user);
+          setGoogleUser(user);
           if(loginresult.data.login.user === null){
               navigation.navigate("Register");
           }

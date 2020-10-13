@@ -68,9 +68,12 @@ class SignupScreen extends React.Component {
   };
 
   render() {
+    const { googleAvatar } = this.props;
     return (
       <View style={styles.container}>
         <Text style={[styles.title, styles.leftTitle]}>Create new account</Text>
+        <Image style={styles.userImage} source={{ uri: googleAvatar }} />
+
         <View style={styles.InputContainer}>
           <TextInput
             style={styles.body}
@@ -115,6 +118,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: AppStyles.color.white,
   },
+  userImage: {
+    borderRadius: 60,
+    height: 120,
+    marginBottom: 10,
+    width: 120,
+  },
   title: {
     fontSize: AppStyles.fontSize.title,
     fontWeight: "bold",
@@ -126,7 +135,7 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     textAlign: "left",
     marginLeft: 20,
-    color: AppStyles.color.purple
+    color: AppStyles.color.purple,
   },
   content: {
     paddingLeft: 50,

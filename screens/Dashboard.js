@@ -25,27 +25,30 @@ export default function Dashboard() {
   const [logo, setLogo] = useState(true);
   const [theme, setTheme] = useState(eva.light);
   //saves the state of user => will eventually be the intiall value of user context
-  const [user, setUser] = useState(undefined);
+  const [googleUser, setGoogleUser] = useState(undefined);
+  const [googleAvatar, setGoogleAvatar] = useState(null);
+  if (typeof googleUser === 'object'){
+    setGoogleAvatar(googleUser.photoUrl);
+  }
+    // const [navColor, setNav] = React.useState("#8e44ad");
+    // const [brightness, setBrightness] = React.useState("rgb(35, 43, 67)");
 
-  // const [navColor, setNav] = React.useState("#8e44ad");
-  // const [brightness, setBrightness] = React.useState("rgb(35, 43, 67)");
+    // const toggleTheme = () => {
+    //   const nextTheme = theme === eva.light ? eva.dark : eva.light;
+    //   const newNavColor = navColor === "#8e44ad" ? "rgb(35, 43, 67)" : "#8e44ad";
+    //   const sunColor =
+    //     brightness === "rgb(35, 43, 67)" ? "#8e44ad" : "rgb(35, 43, 67)";
+    //   setLogo(!logo);
+    //   setBrightness(sunColor);
+    //   setTheme(nextTheme);
+    //   setNav(newNavColor);
+    // };
 
-  // const toggleTheme = () => {
-  //   const nextTheme = theme === eva.light ? eva.dark : eva.light;
-  //   const newNavColor = navColor === "#8e44ad" ? "rgb(35, 43, 67)" : "#8e44ad";
-  //   const sunColor =
-  //     brightness === "rgb(35, 43, 67)" ? "#8e44ad" : "rgb(35, 43, 67)";
-  //   setLogo(!logo);
-  //   setBrightness(sunColor);
-  //   setTheme(nextTheme);
-  //   setNav(newNavColor);
-  // };
-
-  return (
-    <Provider value={client}>
-      <ApplicationProvider mapping={eva.mapping} {...eva} theme={theme}>
-        <LoginStack setUser={setUser} />
-        {/* <Tab.Navigator barStyle={{ backgroundColor: navColor }}>
+    return (
+      <Provider value={client}>
+        <ApplicationProvider mapping={eva.mapping} {...eva} theme={theme}>
+          <LoginStack setGoogleUser={setGoogleUser} googleUser={googleUser} />
+          {/* <Tab.Navigator barStyle={{ backgroundColor: navColor }}>
         <Tab.Screen
           name="Feed"
           children={() => (
@@ -94,12 +97,12 @@ export default function Dashboard() {
           }}
         />
       </Tab.Navigator> */}
-      </ApplicationProvider>
-    </Provider>
-  );
+        </ApplicationProvider>
+      </Provider>
+    );
 }
 
-function LoginStack({setUser}) {
+function LoginStack({ setGoogleUser, googleUser }) {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -107,9 +110,11 @@ function LoginStack({setUser}) {
       }}
     >
       <Stack.Screen name="Login">
-        {(props) => <Login {...props} setUser={setUser} />}
+        {(props) => <Login {...props} setGoogleUser={setGoogleUser} />}
       </Stack.Screen>
-      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="Register">
+        {(props) => <Register {...props} googleUser={googleUser} />}
+      </Stack.Screen>
       <Stack.Screen name="ViewPost" component={QaPost} />
     </Stack.Navigator>
   );
