@@ -9,7 +9,7 @@ const AppStyles = {
     tint: "#ff5a66",
     description: "#bbbbbb",
     filterTitle: "#8a8a8a",
-    starRating: "#2bdf85",
+    starRating: "#fad859",
     location: "#a9a9a9",
     white: "white",
     facebook: "#4267b2",

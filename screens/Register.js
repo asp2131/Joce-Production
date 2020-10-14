@@ -1,21 +1,43 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Image,
+  LogBox,
+} from "react-native";
 import { Button } from "react-native-ui-kitten";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
-import { Toast } from "native-base";
+import Toast from "react-native-toast-message";
 import { AppStyles } from "./utils";
 
 function SignupScreen({ googleUser, setGoogleUser }) {
+  // const [isInvalid, setInvalid] = useState(false);
   const [crendentials, setCredentials] = useState({
     loading: true,
     username: "",
     bio: "",
   });
 
-  const onRegister = () => {};
+  useEffect(() => {
+    LogBox.ignoreLogs(["Animated: `useNativeDriver`"]);
+  }, []);
 
+
+  const onRegister = () => {
+      if(crendentials.username.length < 3){
+        Toast.show({
+          text1: "Username must be at least 3 characters",
+          position: "bottom",
+          type: "error",
+          visibilityTime: 2000,
+        });
+      }
+  }
+  
   const getPermissionAsync = async () => {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -69,7 +91,7 @@ function SignupScreen({ googleUser, setGoogleUser }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.bio}
-          placeholder="Bio"
+          placeholder="Bio (optional)"
           onChangeText={(text) =>
             setCredentials((prevCredentials) => ({
               ...prevCredentials,
@@ -91,10 +113,11 @@ function SignupScreen({ googleUser, setGoogleUser }) {
       <Button
         appearance="ghost"
         style={styles.facebookText}
-        onPress={() => onRegister()}
+        onPress={onRegister}
       >
         Create Account
       </Button>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </View>
   );
 }

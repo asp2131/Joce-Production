@@ -35,7 +35,6 @@ export default function Login({setGoogleUser}) {
           // of `result.fetching` not being set.
           // console.log(loginresult.data.login.user)
           // console.log(loginresult.data.login.user)
-          console.log(user);
           setGoogleUser(user);
           if(loginresult.data.login.user === null){
               navigation.navigate("Register");
