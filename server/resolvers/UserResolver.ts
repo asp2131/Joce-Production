@@ -44,9 +44,8 @@ class UsernamePasswordInput {
 
 @Resolver(User)
 export class UserResolver {
-  @Mutation(() => UserResponse)
+  @Query(() => UserResponse)
   async login(
-    @Arg("email", { nullable: false }) email?: string,
     @Arg("id_google", { nullable: true }) id_google?: string,
     // @Ctx() { res }: MyContext
   ) {
@@ -58,10 +57,13 @@ export class UserResolver {
     try {
       // const manager = getMongoManager();
       // newUser = await manager.save(user);
+      user = await getConnection()
+    .getRepository(User)
+    .createQueryBuilder("user")
+    .where("user.id_google = :id_google", { id_google: id_google })
+    .getOne();
 
-      const user = await User.findOne({
-        where: { email: email, id_google: id_google },
-      });
+      
       if (!user) {
         return {
           errors: [
@@ -80,14 +82,16 @@ export class UserResolver {
     } catch (e) {
       console.log(e);
     }
-    return { user };
+    return {user} ;
   }
 
   @Mutation(() => UserResponse)
   async register(
     @Arg("email", { nullable: false }) email?: string,
-    @Arg("username", { nullable: true }) username?: string,
-    @Arg("id_google", { nullable: true }) id_google?: string,
+    @Arg("username", { nullable: false }) username?: string,
+    @Arg("id_google", { nullable: false }) id_google?: string,
+    @Arg("profile_pic", { nullable: true }) profile_pic?: string,
+    @Arg("bio", { nullable: true }) bio?: string,
     // @Arg("profile_pic", { nullable: true }) profile_pic?: string
   ) {
     // const errors = validateRegister(options);
@@ -108,12 +112,15 @@ export class UserResolver {
           email: email,
           username: username,
           id_google: id_google,
+          profile_pic: profile_pic,
+          bio: bio
         })
-        .execute();
+        .execute()
+        ;
       user = result.raw[0];
     } catch (err) {
-      //|| err.detail.includes("already exists")) {
-      console.log(err);
+      err.detail.includes("already exists") 
+      // console.log(err);
       if (err.code === "23505") {
         return {
           errors: [
@@ -125,7 +132,6 @@ export class UserResolver {
         };
       }
     }
-
     // store user id session
     // this will set a cookie on the user
     // keep them logged in

@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Image,
-  LogBox,
-} from "react-native";
+import { StyleSheet, Text, TextInput, View, Image, LogBox } from "react-native";
 import { Button } from "react-native-ui-kitten";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
 import Toast from "react-native-toast-message";
 import { AppStyles } from "./utils";
+import { useMutation, useQuery } from "urql";
+import { mutations } from "./utils";
 
 function SignupScreen({ googleUser, setGoogleUser }) {
   // const [isInvalid, setInvalid] = useState(false);
-  const [crendentials, setCredentials] = useState({
+  const [registerUserResult, registerUser] = useQuery(mutations.REGISTER);
+  const [credentials, setCredentials] = useState({
     loading: true,
     username: "",
     bio: "",
@@ -26,18 +22,29 @@ function SignupScreen({ googleUser, setGoogleUser }) {
     LogBox.ignoreLogs(["Animated: `useNativeDriver`"]);
   }, []);
 
-
   const onRegister = () => {
-      if(crendentials.username.length < 3){
-        Toast.show({
-          text1: "Username must be at least 3 characters",
-          position: "bottom",
-          type: "error",
-          visibilityTime: 2000,
-        });
-      }
-  }
-  
+    if (credentials.username.length < 3) {
+      Toast.show({
+        text1: "Username must be at least 3 characters",
+        position: "bottom",
+        type: "error",
+        visibilityTime: 2000,
+      });
+    }
+
+     registerUser({
+       email: googleUser.email,
+       username: credentials.username,
+       id_google: googleUser.id,
+       profile_pic: googleUser.photoUrl,
+       bio: credentials.bio,
+     })
+       .then((registerResult) => {
+         console.log(registerUserResult.data);
+       })
+       .catch((e) => console.log(e));
+  };
+
   const getPermissionAsync = async () => {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -48,7 +55,7 @@ function SignupScreen({ googleUser, setGoogleUser }) {
   };
 
   const selectImage = async () => {
-    console.log("hello world");
+    // console.log("hello world");
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -83,7 +90,7 @@ function SignupScreen({ googleUser, setGoogleUser }) {
               username: text,
             }))
           }
-          value={crendentials.username}
+          value={credentials.username}
           placeholderTextColor={AppStyles.color.purple}
           underlineColorAndroid="transparent"
         />
@@ -98,7 +105,7 @@ function SignupScreen({ googleUser, setGoogleUser }) {
               bio: text,
             }))
           }
-          value={crendentials.bio}
+          value={credentials.bio}
           placeholderTextColor={AppStyles.color.purple}
           underlineColorAndroid="transparent"
         />

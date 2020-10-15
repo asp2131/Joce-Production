@@ -29,18 +29,16 @@ export default function Login({setGoogleUser}) {
       });
       if (type === "success") {
         
-        loginUser({email: user.email, id_google: user.id})
-          .then(loginresult => {
-          // The result is almost identical to `updateTodoResult` with the exception
-          // of `result.fetching` not being set.
-          // console.log(loginresult.data.login.user)
-          // console.log(loginresult.data.login.user)
+        loginUser({id_google: user.id})
+          .then(loginResult => {
+          //saving GoolgeUser info for sign up
+          console.log(loginResult.data.login.user);
           setGoogleUser(user);
-          if(loginresult.data.login.user === null){
-              navigation.navigate("Register");
+          if (loginResult.data.login.user === null) {
+            navigation.navigate("Register");
           }
         })
-          .catch(e => console.log(e));
+          .catch(e => console.log(e, "line 41 Login.js"));
         // setStatus(loginResult)
         
         return {accessToken: accessToken, user: user};
