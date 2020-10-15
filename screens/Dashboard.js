@@ -12,8 +12,9 @@ import Profile from "./Profile";
 import QaPost from "./QaPost";
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./Login";
-import Register from './Register'
+import Register from "./Register";
 import { createClient, Provider } from "urql";
+import { AppStyles } from "./utils";
 
 const client = createClient({ url: "http://192.168.0.97:3000/graphql" });
 
@@ -22,31 +23,21 @@ const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
 export default function Dashboard() {
-  const [logo, setLogo] = useState(true);
   const [theme, setTheme] = useState(eva.light);
+  const [mainUser, setMainUser] = useState(null);
   //saves the state of user => will eventually be the intiall value of user context
   const [googleUser, setGoogleUser] = useState(undefined);
   // const [googleAvatar, setGoogleAvatar] = useState(null);
 
-    // const [navColor, setNav] = React.useState("#8e44ad");
-    // const [brightness, setBrightness] = React.useState("rgb(35, 43, 67)");
-
-    // const toggleTheme = () => {
-    //   const nextTheme = theme === eva.light ? eva.dark : eva.light;
-    //   const newNavColor = navColor === "#8e44ad" ? "rgb(35, 43, 67)" : "#8e44ad";
-    //   const sunColor =
-    //     brightness === "rgb(35, 43, 67)" ? "#8e44ad" : "rgb(35, 43, 67)";
-    //   setLogo(!logo);
-    //   setBrightness(sunColor);
-    //   setTheme(nextTheme);
-    //   setNav(newNavColor);
-    // };
-
-    return (
-      <Provider value={client}>
-        <ApplicationProvider mapping={eva.mapping} {...eva} theme={theme}>
-          <LoginStack setGoogleUser={setGoogleUser} googleUser={googleUser} />
-          {/* <Tab.Navigator barStyle={{ backgroundColor: navColor }}>
+  return (
+    <Provider value={client}>
+      <ApplicationProvider mapping={eva.mapping} {...eva} theme={theme}>
+        <LoginStack
+          setMainUser={setMainUser}
+          setGoogleUser={setGoogleUser}
+          googleUser={googleUser}
+        />
+        {/* <Tab.Navigator barStyle={{ backgroundColor: navColor }}>
         <Tab.Screen
           name="Feed"
           children={() => (
@@ -95,12 +86,32 @@ export default function Dashboard() {
           }}
         />
       </Tab.Navigator> */}
-        </ApplicationProvider>
-      </Provider>
-    );
+      </ApplicationProvider>
+    </Provider>
+  );
 }
 
-function LoginStack({ setGoogleUser, googleUser }) {
+function LoginStack({ setGoogleUser, googleUser, setMainUser }) {
+  const [logo, setLogo] = useState(true);
+  const [navColor, setNav] = React.useState(AppStyles.color.purple);
+  const [brightness, setBrightness] = React.useState(AppStyles.color.sun);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === eva.light ? eva.dark : eva.light;
+    const newNavColor =
+      navColor === AppStyles.color.purple
+        ? AppStyles.color.sun
+        : AppStyles.color.purple;
+    const sunColor =
+      brightness === AppStyles.color.sun
+        ? AppStyles.color.purple
+        : AppStyles.color.sun;
+    setLogo(!logo);
+    setBrightness(sunColor);
+    setTheme(nextTheme);
+    setNav(newNavColor);
+  };
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -108,7 +119,13 @@ function LoginStack({ setGoogleUser, googleUser }) {
       }}
     >
       <Stack.Screen name="Login">
-        {(props) => <Login {...props} setGoogleUser={setGoogleUser} />}
+        {(props) => (
+          <Login
+            {...props}
+            setMainUser={setMainUser}
+            setGoogleUser={setGoogleUser}
+          />
+        )}
       </Stack.Screen>
       <Stack.Screen name="Register">
         {(props) => (
@@ -119,7 +136,71 @@ function LoginStack({ setGoogleUser, googleUser }) {
           />
         )}
       </Stack.Screen>
-      <Stack.Screen name="ViewPost" component={QaPost} />
+      <Stack.Screen name="Dashboard">
+        {(props) => (
+          <Tab.Navigator barStyle={{ backgroundColor: navColor }}>
+            <Tab.Screen
+              name="Feed"
+              children={() => (
+                <Home
+                  logo={logo}
+                  brightness={brightness}
+                  toggleTheme={toggleTheme}
+                />
+              )}
+              options={{
+                tabBarLabel: "Home",
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons name="home" color={color} size={20} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Explore"
+              component={ExploreStack}
+              options={{
+                tabBarLabel: "Explore",
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons
+                    name="compass"
+                    color={color}
+                    size={20}
+                  />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Create"
+              component={Create}
+              options={{
+                tabBarLabel: "Create",
+                tabBarVisible: false,
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons
+                    name="pencil"
+                    color={color}
+                    size={20}
+                  />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Profile"
+              component={Profile}
+              options={{
+                tabBarLabel: "Profile",
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons
+                    name="account"
+                    color={color}
+                    size={20}
+                  />
+                ),
+              }}
+            />
+          </Tab.Navigator>
+        )}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }

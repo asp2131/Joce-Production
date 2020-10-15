@@ -4,18 +4,18 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import { Button } from "react-native-ui-kitten";
 import * as Google from "expo-google-app-auth";
 import Constants from "expo-constants";
-import { useMutation } from "urql";
-import {mutations} from './utils'
+import { useMutation, useQuery } from "urql";
+import {mutations, queries} from './utils'
 const { ANDROID_CLIENT_ID, IOS_CLIENT_ID } = Constants.manifest.extra;
 import { useNavigation } from "@react-navigation/native";
 
 
 
-export default function Login({setGoogleUser}) {
+export default function Login({ setGoogleUser, setMainUser }) {
   const navigation = useNavigation();
-  let [loginStatus, setStatus] = useState('');
+  let [loginStatus, setStatus] = useState("");
 
-  const [loginUserResult, loginUser] = useMutation(mutations.LOGIN);
+  const [loginUserResult, loginUser] = useMutation(queries.LOGIN);
   /*
   functions allows users to sign in/sign up with google
   @return: User, accessToken, statusType
@@ -28,27 +28,26 @@ export default function Login({setGoogleUser}) {
         scopes: ["profile", "email"],
       });
       if (type === "success") {
-        
-        loginUser({id_google: user.id})
-          .then(loginResult => {
-          //saving GoolgeUser info for sign up
-          console.log(loginResult.data.login.user);
-          setGoogleUser(user);
-          if (loginResult.data.login.user === null) {
-            navigation.navigate("Register");
-          }
-        })
-          .catch(e => console.log(e, "line 41 Login.js"));
+        loginUser({ id_google: user.id })
+          .then((loginResult) => {
+            //saving GoolgeUser info for sign up
+            setGoogleUser(user);
+            if (loginResult.data.login.user === null) {
+              navigation.navigate("Register");
+            } else {
+              setMainUser(loginResult.data.login.user);
+              navigation.navigate("Dashboard");
+            }
+          })
+          .catch((e) => console.log(e, "line 41 Login.js"));
         // setStatus(loginResult)
-        
-        return {accessToken: accessToken, user: user};
-      } 
-      
+
+        return { accessToken: accessToken, user: user };
+      }
     } catch (e) {
       return { error: true };
     }
   };
-
 
   return (
     <View style={styles.container}>
@@ -56,7 +55,7 @@ export default function Login({setGoogleUser}) {
       <Button
         appearance="ghost"
         status="success"
-        style={{size: 100}}
+        style={{ size: 100 }}
         title="Login with Google"
         onPress={() => {
           return loginUser(signInWithGoogleAsync());

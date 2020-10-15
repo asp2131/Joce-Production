@@ -1,5 +1,6 @@
 const AppStyles = {
   color: {
+    sun: "rgb(35, 43, 67)",
     main: "#5ea23a",
     text: "black",
     purple: "#8e44ad",
