@@ -120,6 +120,7 @@ export class UserResolver {
           profile_pic: profile_pic,
           bio: bio
         })
+        .returning(['email', 'username', 'profile_pic', 'bio'])
         .execute()
         ;
       user = result.raw[0];

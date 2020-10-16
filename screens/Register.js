@@ -8,10 +8,12 @@ import Toast from "react-native-toast-message";
 import { AppStyles } from "./utils";
 import { useMutation, useQuery } from "urql";
 import { mutations } from "./utils";
+import { useNavigation } from "@react-navigation/native";
+
 
 function SignupScreen({ googleUser, setGoogleUser }) {
   // const [isInvalid, setInvalid] = useState(false);
-  const [registerUserResult, registerUser] = useQuery(mutations.REGISTER);
+  const [registerUserResult, registerUser] = useMutation(mutations.REGISTER);
   const [credentials, setCredentials] = useState({
     loading: true,
     username: "",
@@ -40,7 +42,8 @@ function SignupScreen({ googleUser, setGoogleUser }) {
        bio: credentials.bio,
      })
        .then((registerResult) => {
-         console.log(registerUserResult.data);
+         const {user} = registerResult.data.register
+         console.log(user);
        })
        .catch((e) => console.log(e));
   };

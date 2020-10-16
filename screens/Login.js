@@ -1,15 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Button } from "react-native-ui-kitten";
 import * as Google from "expo-google-app-auth";
 import Constants from "expo-constants";
 import { useMutation, useQuery } from "urql";
-import {mutations, queries} from './utils'
+import { mutations, queries } from "./utils";
 const { ANDROID_CLIENT_ID, IOS_CLIENT_ID } = Constants.manifest.extra;
 import { useNavigation } from "@react-navigation/native";
-
-
 
 export default function Login({ setGoogleUser, setMainUser }) {
   const navigation = useNavigation();
@@ -28,26 +26,21 @@ export default function Login({ setGoogleUser, setMainUser }) {
         scopes: ["profile", "email"],
       });
       if (type === "success") {
-        loginUser({ id_google: user.id })
-          .then((loginResult) => {
-            //saving GoolgeUser info for sign up
-            
-            
-            if (loginResult.data.login.user !== null) {
+        setGoogleUser(user);
+        let loginResult = await loginUser({ id_google: user.id })
+        console
+          .log(loginResult.data.login.user)
+
+          
+          if (loginResult.data.login.user !== null) {
               setMainUser(loginResult.data.login.user);
               navigation.navigate("Dashboard");
-              // setGoogleUser(user);
-              // navigation.navigate("Register");
-            } 
-            // else {
-            //   console.log(loginResult.data);
-            //   setGoogleUser(user);
-            //   navigation.navigate("Register");
-            // }
-          })
-          .catch((e) => console.log(e, "line 41 Login.js"));
-        // setStatus(loginResult)
-
+          }
+          else {
+             navigation.navigate("Register");
+          }
+          // .catch((e) => console.error(e));
+ 
         return { accessToken: accessToken, user: user };
       }
     } catch (e) {
