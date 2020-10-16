@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import Poll from '../components/Poll'
 import { Button, Text, Layout } from 'react-native-ui-kitten';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Toast from "react-native-toast-message";
 // import NavBar from 'antd-mobile/lib/';
 
 
@@ -11,20 +12,41 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 export default function Home(props) {
     const { toggleTheme, brightness, logo} = props;
 
+    useEffect(() => {
+      Toast.show({
+        text1: "Welcome Back",
+        position: "bottom",
+        visibilityTime: 2000,
+      });
+      
+    }, []);
+
     return (
-        <Layout style={styles.container}>
-            <Layout style={styles.header} level='2'> 
-                <TouchableOpacity onPress={toggleTheme} >
-                <MaterialCommunityIcons name="brightness-6" color={brightness} size={20} />
-            </TouchableOpacity>
-            </Layout>
-            {
-                logo ? <Image style={styles.logo} source={require('../assets/joceAlt.png')} /> :
-                    <Image style={styles.logo} source={require('../assets/text-logo.png')} />
-            }
-            
-            <Poll />
+      <Layout style={styles.container}>
+        <Layout style={styles.header} level="2">
+          <TouchableOpacity onPress={toggleTheme}>
+            <MaterialCommunityIcons
+              name="brightness-6"
+              color={brightness}
+              size={20}
+            />
+          </TouchableOpacity>
         </Layout>
+        {logo ? (
+          <Image
+            style={styles.logo}
+            source={require("../assets/joceAlt.png")}
+          />
+        ) : (
+          <Image
+            style={styles.logo}
+            source={require("../assets/text-logo.png")}
+          />
+        )}
+
+        <Poll />
+        <Toast ref={(ref) => Toast.setRef(ref)} />
+      </Layout>
     );
 }
 

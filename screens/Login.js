@@ -31,13 +31,19 @@ export default function Login({ setGoogleUser, setMainUser }) {
         loginUser({ id_google: user.id })
           .then((loginResult) => {
             //saving GoolgeUser info for sign up
-            setGoogleUser(user);
-            if (loginResult.data.login.user === null) {
-              navigation.navigate("Register");
-            } else {
+            
+            
+            if (loginResult.data.login.user !== null) {
               setMainUser(loginResult.data.login.user);
               navigation.navigate("Dashboard");
-            }
+              // setGoogleUser(user);
+              // navigation.navigate("Register");
+            } 
+            // else {
+            //   console.log(loginResult.data);
+            //   setGoogleUser(user);
+            //   navigation.navigate("Register");
+            // }
           })
           .catch((e) => console.log(e, "line 41 Login.js"));
         // setStatus(loginResult)

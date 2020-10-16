@@ -45,9 +45,10 @@ class UsernamePasswordInput {
 @Resolver(User)
 export class UserResolver {
   @Query(() => UserResponse)
-  async login(
-    @Arg("id_google", { nullable: true }) id_google?: string,
-    // @Ctx() { res }: MyContext
+  async login( 
+    @Ctx() { req }: MyContext,
+    @Arg("id_google", { nullable: true }) id_google?: string
+    
   ) {
     // const errors = validateRegister(options);
 
@@ -82,7 +83,11 @@ export class UserResolver {
     } catch (e) {
       console.log(e);
     }
-    return {user} ;
+    if(req.session){
+      req.session.user = user;
+          return {user} 
+    }
+    
   }
 
   @Mutation(() => UserResponse)
