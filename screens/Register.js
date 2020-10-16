@@ -11,8 +11,9 @@ import { mutations } from "./utils";
 import { useNavigation } from "@react-navigation/native";
 
 
-function SignupScreen({ googleUser, setGoogleUser }) {
+function SignupScreen({ googleUser, setGoogleUser, setMainUser }) {
   // const [isInvalid, setInvalid] = useState(false);
+  const navigation = useNavigation();
   const [registerUserResult, registerUser] = useMutation(mutations.REGISTER);
   const [credentials, setCredentials] = useState({
     loading: true,
@@ -34,18 +35,25 @@ function SignupScreen({ googleUser, setGoogleUser }) {
       });
     }
 
-     registerUser({
-       email: googleUser.email,
-       username: credentials.username,
-       id_google: googleUser.id,
-       profile_pic: googleUser.photoUrl,
-       bio: credentials.bio,
-     })
-       .then((registerResult) => {
-         const {user} = registerResult.data.register
-         console.log(user);
-       })
-       .catch((e) => console.log(e));
+    registerUser({
+      email: googleUser.email,
+      username: credentials.username,
+      id_google: googleUser.id,
+      profile_pic: googleUser.photoUrl,
+      bio: credentials.bio,
+    })
+      .then((registerResult) => {
+        const { user } = registerResult.data.register;
+        setMainUser(user);
+        navigation.navigate("Dashboard");
+        Toast.show({
+          text1: "Successfully Registered",
+          position: "bottom",
+          visibilityTime: 2000,
+        });
+        console.log(user);
+      })
+      .catch((e) => console.log(e));
   };
 
   const getPermissionAsync = async () => {

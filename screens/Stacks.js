@@ -56,6 +56,7 @@ export default function MainStack({ setGoogleUser, googleUser, setMainUser }) {
         {(props) => (
           <Register
             {...props}
+            setMainUser={setMainUser}
             setGoogleUser={setGoogleUser}
             googleUser={googleUser}
           />
