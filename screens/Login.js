@@ -28,10 +28,7 @@ export default function Login({ setGoogleUser, setMainUser }) {
       if (type === "success") {
         setGoogleUser(user);
         let loginResult = await loginUser({ id_google: user.id })
-        console
-          .log(loginResult.data.login.user)
-
-          
+        
           if (loginResult.data.login.user !== null) {
               setMainUser(loginResult.data.login.user);
               navigation.navigate("Dashboard");
