@@ -24,7 +24,7 @@ export default function Home(props) {
 
     useEffect(() => {
         const backAction = () => {
-          Alert.alert("Hold on!", "Are you sure you want to go back?", [
+          Alert.alert("Hold on!", "Are you sure you want to exit?", [
             {
               text: "Cancel",
               onPress: () => null,
