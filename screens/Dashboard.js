@@ -1,103 +1,31 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ApplicationProvider } from "react-native-ui-kitten";
 import * as eva from "@eva-design/eva";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Home from "./Home";
-import Explore from "./Explore";
-import Create from "./Create";
-import Profile from "./Profile";
-import QaPost from "./QaPost";
-import { createStackNavigator } from "@react-navigation/stack";
-import Firebase, { FirebaseProvider } from "./utils";
+import {createClient, Provider} from 'urql'
+import MainStack from './Stacks'
 
-const Stack = createStackNavigator();
 
-const Tab = createMaterialBottomTabNavigator();
+const client = createClient({ url: "http://192.168.0.97:3000/graphql" });
 
 export default function Dashboard() {
-  const [theme, setTheme] = React.useState(eva.light);
-  const [navColor, setNav] = React.useState("#8e44ad");
-  const [brightness, setBrightness] = React.useState("rgb(35, 43, 67)");
-  const [logo, setLogo] = React.useState(true);
-
-  const toggleTheme = () => {
-    const nextTheme = theme === eva.light ? eva.dark : eva.light;
-    const newNavColor = navColor === "#8e44ad" ? "rgb(35, 43, 67)" : "#8e44ad";
-    const sunColor =
-      brightness === "rgb(35, 43, 67)" ? "#8e44ad" : "rgb(35, 43, 67)";
-    setLogo(!logo);
-    setBrightness(sunColor);
-    setTheme(nextTheme);
-    setNav(newNavColor);
-  };
+  const [theme, setTheme] = useState(eva.light);
+  const [mainUser, setMainUser] = useState(null);
+  //saves the state of user => will eventually be the intiall value of user context
+  const [googleUser, setGoogleUser] = useState({});
+  
+  // const [googleAvatar, setGoogleAvatar] = useState(null);
 
   return (
-    <ApplicationProvider mapping={eva.mapping} {...eva} theme={theme}>
-      <Tab.Navigator barStyle={{ backgroundColor: navColor }}>
-        <Tab.Screen
-          name="Feed"
-          children={() => (
-            <Home
-              logo={logo}
-              brightness={brightness}
-              toggleTheme={toggleTheme}
-            />
-          )}
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="home" color={color} size={20} />
-            ),
-          }}
+    <Provider value={client}>
+      <ApplicationProvider mapping={eva.mapping} {...eva} theme={theme}>
+        <MainStack
+          setMainUser={setMainUser}
+          setGoogleUser={setGoogleUser}
+          googleUser={googleUser}
         />
-        <Tab.Screen
-          name="Explore"
-          component={ExploreStack}
-          options={{
-            tabBarLabel: "Explore",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="compass" color={color} size={20} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Create"
-          component={Create}
-          options={{
-            tabBarLabel: "Create",
-            tabBarVisible: false,
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="pencil" color={color} size={20} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            tabBarLabel: "Profile",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="account" color={color} size={20} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </ApplicationProvider>
+      </ApplicationProvider>
+    </Provider>
   );
 }
 
-function ExploreStack() {
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="Home" component={Explore} />
-      <Stack.Screen name="ViewPost" component={QaPost} />
-    </Stack.Navigator>
-  );
-}

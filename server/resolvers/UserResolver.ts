@@ -44,21 +44,60 @@ class UsernamePasswordInput {
 
 @Resolver(User)
 export class UserResolver {
-  @Query(() => User, { nullable: true })
-  me(@Ctx() { req }: MyContext) {
-    // you are not logged in
-    // if (!req.session.userId) {
-    //     return null;
-    // }
+  @Query(() => UserResponse)
+  async login( 
+    @Ctx() { req }: MyContext,
+    @Arg("id_google", { nullable: true }) id_google?: string
+    
+  ) {
+    // const errors = validateRegister(options);
 
-    return "log in route";
+    let user;
+    // let user = {email: email, username: username, id_google: id_google} as User;
+
+    try {
+      // const manager = getMongoManager();
+      // newUser = await manager.save(user);
+      user = await getConnection()
+    .getRepository(User)
+    .createQueryBuilder("user")
+    .where("user.id_google = :id_google", { id_google: id_google })
+    .getOne();
+
+      
+      if (!user) {
+        return {
+          errors: [
+            {
+              field: "usernameOrEmail",
+              message: "that username doesn't exist",
+            },
+          ],
+        };
+      }
+      // res.send(user);
+      // store user id session
+      // this will set a cookie on the user
+      // keep them logged in
+      // req.session.userId = user.id;
+    } catch (e) {
+      console.log(e);
+    }
+    if(req.session){
+      req.session.user = user;
+          return {user} 
+    }
+    
   }
 
   @Mutation(() => UserResponse)
   async register(
     @Arg("email", { nullable: false }) email?: string,
-    @Arg("username", { nullable: true }) username?: string,
-    @Arg("id_google", { nullable: true }) id_google?: string
+    @Arg("username", { nullable: false }) username?: string,
+    @Arg("id_google", { nullable: false }) id_google?: string,
+    @Arg("profile_pic", { nullable: true }) profile_pic?: string,
+    @Arg("bio", { nullable: true }) bio?: string,
+    // @Arg("profile_pic", { nullable: true }) profile_pic?: string
   ) {
     // const errors = validateRegister(options);
 
@@ -78,12 +117,16 @@ export class UserResolver {
           email: email,
           username: username,
           id_google: id_google,
+          profile_pic: profile_pic,
+          bio: bio
         })
-        .execute();
+        .returning(['email', 'username', 'profile_pic', 'bio'])
+        .execute()
+        ;
       user = result.raw[0];
     } catch (err) {
-      //|| err.detail.includes("already exists")) {
-      console.log(err);
+      err.detail.includes("already exists") 
+      // console.log(err);
       if (err.code === "23505") {
         return {
           errors: [
@@ -95,7 +138,6 @@ export class UserResolver {
         };
       }
     }
-
     // store user id session
     // this will set a cookie on the user
     // keep them logged in
@@ -128,4 +170,14 @@ export class UserResolver {
   //     user,
   // };
   // }
+
+    @Query(() => User, { nullable: true })
+    me(@Ctx() { req }: MyContext) {
+    // you are not logged in
+    // if (!req.session.userId) {
+    //     return null;
+    // }
+
+    return "log in route";
+  }
 }
