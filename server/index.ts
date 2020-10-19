@@ -31,17 +31,17 @@ const main = async () => {
 
   const app = express();
 
-const RedisStore = connectRedis(session);
-  const redis = new Redis(process.env.REDIS_URL, {
-  connectTimeout: 10000
-});
+// const RedisStore = connectRedis(session);
+//   const redis = new Redis(process.env.REDIS_URL, {
+//   connectTimeout: 10000
+// });
   app.use(
     session({
       name: process.env.COOKIE_NAME,
-      store: new RedisStore({
-        client: redis,
-        disableTouch: true,
-      }),
+      // store: new RedisStore({
+      //   client: redis,
+      //   disableTouch: true,
+      // }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
         httpOnly: true,
@@ -51,11 +51,11 @@ const RedisStore = connectRedis(session);
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET || "hi",
       resave: false,
+    }),
+    cors({
+      origin: process.env.CORS_ORIGIN,
+      credentials: true,
     })
-  //   cors({
-  //     origin: "http://localhost:3000/",
-  //     credentials: true,
-  //   })
   );
   
 
@@ -67,7 +67,7 @@ const RedisStore = connectRedis(session);
     context: ({ req, res }) => ({
       req,
       res,
-      redis,
+      // redis,
     }),
   });
 
